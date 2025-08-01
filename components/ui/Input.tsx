@@ -1,8 +1,10 @@
 'use client';
-import React from 'react';
-import { motion } from 'framer-motion';
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+import { forwardRef, useState, type InputHTMLAttributes } from 'react';
+import { motion, type HTMLMotionProps } from 'framer-motion';
+
+/** --- 1. Proprietà aggiuntive specifiche del componente ------------------- */
+interface InputOwnProps {
   label?: string;
   helperText?: string;
   error?: string;
@@ -11,10 +13,37 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   unit?: string;
 }
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, label, helperText, error, leftIcon, rightIcon, unit, ...props }, ref) => {
-    const [isFocused, setIsFocused] = React.useState(false);
+/** --- 2. Prop nativi di <input>, ma SENZA gli handler di drag ------------- */
+type NativeInputProps = Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'onDrag' | 'onDragStart' | 'onDragEnd'
+>;
 
+/** --- 3. Extra di Framer-Motion (facoltativo) ----------------------------- */
+type MotionExtras = HTMLMotionProps<'input'>;
+
+/** --- 4. Prop finali che il componente accetta --------------------------- */
+export type InputProps = InputOwnProps & NativeInputProps & MotionExtras;
+
+/* ------------------------------------------------------------------------- */
+
+const Input = forwardRef<HTMLInputElement, InputProps>(
+  (
+    {
+      className,
+      label,
+      helperText,
+      error,
+      leftIcon,
+      rightIcon,
+      unit,
+      ...props   // NON contiene onDrag*, quindi niente conflitti di tipi
+    },
+    ref
+  ) => {
+    const [isFocused, setIsFocused] = useState(false);
+
+    /* ----------------- markup ------------------------------------------------ */
     return (
       <div className="w-full">
         {label && (
@@ -23,14 +52,15 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {props.required && <span className="text-red-500 ml-1">*</span>}
           </label>
         )}
-        
+
         <div className="relative">
           {leftIcon && (
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <span className="text-gray-400">{leftIcon}</span>
             </div>
           )}
-          
+
+          {/* ------- l’input animato ------------------------------------------ */}
           <motion.input
             ref={ref}
             className={`
@@ -38,13 +68,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               focus:outline-none focus:ring-0 transition-all duration-200
               ${leftIcon ? 'pl-10' : ''}
               ${rightIcon || unit ? 'pr-10' : ''}
-              ${error 
-                ? 'border-red-300 focus:border-red-500' 
-                : isFocused 
-                  ? 'border-blue-500 shadow-colored' 
+              ${
+                error
+                  ? 'border-red-300 focus:border-red-500'
+                  : isFocused
+                  ? 'border-blue-500 shadow-colored'
                   : 'border-gray-200 hover:border-gray-300'
               }
-              ${className}
+              ${className ?? ''}
             `}
             onFocus={(e) => {
               setIsFocused(true);
@@ -54,13 +85,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               setIsFocused(false);
               props.onBlur?.(e);
             }}
-            animate={{
-              scale: isFocused ? 1.01 : 1,
-            }}
+            animate={{ scale: isFocused ? 1.01 : 1 }}
             transition={{ duration: 0.2 }}
-            {...props}
+            {...props}  /* spread finale: ora sicuro */
           />
-          
+
           {(rightIcon || unit) && (
             <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
               {unit ? (
@@ -71,7 +100,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             </div>
           )}
         </div>
-        
+
         {(error || helperText) && (
           <motion.p
             initial={{ opacity: 0, y: -10 }}
@@ -86,6 +115,5 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   }
 );
 
-Input.displayName = "Input";
-
+Input.displayName = 'Input';
 export default Input;

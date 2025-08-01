@@ -25,6 +25,7 @@ export default function ItalianLayout({
         {children}
       </main>
       <Footer lang="it" />
+      {/* Toast Container placeholder - usa react-hot-toast se installato */}
     </div>
   );
 }

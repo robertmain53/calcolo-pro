@@ -10,11 +10,14 @@
     "lint": "next lint",
     "test": "jest",
     "generate": "node automation.js",
-    "postbuild": "next-sitemap --config next-sitemap.config.cjs"
+    "postbuild": "next-sitemap --config next-sitemap.config.cjs",
+    "review:single": "node review-engine.js review",
+    "review:all": "node review-engine.js review-all",
+    "fix:build": "npm run lint --fix && npm run build"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.19",
-    "@heroicons/react": "^2.0.18",
+    "@heroicons/react": "^2.2.0",
     "class-variance-authority": "^0.7.1",
     "date-fns": "^3.6.0",
     "framer-motion": "^11.2.10",
@@ -23,7 +26,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.51.4",
-    "react-hot-toast": "^2.4.1",
+    "react-hot-toast": "^2.5.2",
     "react-markdown": "^9.0.1",
     "recharts": "^2.12.7"
   },
