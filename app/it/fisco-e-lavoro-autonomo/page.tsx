@@ -1,52 +1,65 @@
-import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import fs from 'fs/promises';
 import path from 'path';
+import React from 'react';
+import ReactMarkdown from 'react-markdown';
 import Breadcrumb from '@/components/layout/Breadcrumb';
+import CalculatorWrapper from '@/components/calculator/CalculatorWrapper';
+import RelatedCalculators from '@/components/calculator/RelatedCalculators';
 
-async function getCalculators() {
-    const calculatorsPath = path.join(process.cwd(), 'content', 'it', 'fisco-e-lavoro-autonomo');
-    try {
-        const entries = await fs.readdir(calculatorsPath, { withFileTypes: true });
-        return entries
-            .filter(entry => entry.isFile() && entry.name.endsWith('.md'))
-            .map(entry => {
-                const slug = entry.name.replace('.md', '');
-                const name = slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-                return { name, slug };
-            });
-    } catch (error) { return []; }
+type Props = { params: { slug: string } };
+
+async function getCalculatorComponent(slug: string) {
+  try {
+    const componentName = slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('') + 'Calculator';
+    return (await import(`@/components/calculators/${componentName}`)).default;
+  } catch (error) { 
+    return null; 
+  }
 }
 
-export default async function CategoryPage() {
-  const calculators = await getCalculators();
-  const categoryName = "Fisco e Lavoro Autonomo";
-  const crumbs = [{ name: "Home", path: "/it" }, { name: categoryName }];
+async function getContent(slug: string) {
+  try {
+    const contentPath = path.join(process.cwd(), 'content', 'it', 'fisco-e-lavoro-autonomo', `${slug}.md`);
+    return await fs.readFile(contentPath, 'utf8');
+  } catch (error) { 
+    return null; 
+  }
+}
+
+export default async function CalculatorPage({ params }: Props) {
+  const CalculatorComponent = await getCalculatorComponent(params.slug);
+  const content = await getContent(params.slug);
+
+  if (!CalculatorComponent) notFound();
+  
+  const calculatorName = params.slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  const crumbs = [
+      { name: "Home", path: "/it" },
+      { name: "Fisco e Lavoro Autonomo", path: "/it/fisco-e-lavoro-autonomo" },
+      { name: calculatorName }
+  ];
 
   return (
     <div className="space-y-8">
-      <Breadcrumb crumbs={crumbs} />
-      
-      {/* Hero Category */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-12 rounded-2xl text-center">
-        <h1 className="text-4xl font-bold mb-4">{categoryName}</h1>
-        <p className="text-xl opacity-90">Calcolatori professionali per {categoryName.toLowerCase()}</p>
-      </div>
-
-      {/* Calculators Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {calculators.map((calc) => (
-            <Link 
-              key={calc.slug} 
-              href={`/it/fisco-e-lavoro-autonomo/${calc.slug}`} 
-              className="block p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
-            >
-              <h2 className="font-bold text-xl text-slate-800 mb-2 hover:text-blue-600 transition-colors">
-                {calc.name}
-              </h2>
-              <p className="text-gray-600">Calcolo professionale per {calc.name.toLowerCase()}</p>
-            </Link>
-        ))}
-      </div>
+        <Breadcrumb crumbs={crumbs} />
+        
+        <CalculatorWrapper calculatorName={calculatorName}>
+          <CalculatorComponent />
+        </CalculatorWrapper>
+        
+        {content && (
+            <article className="prose lg:prose-xl max-w-none bg-white p-8 rounded-2xl shadow-lg">
+                <ReactMarkdown>{content}</ReactMarkdown>
+            </article>
+        )}
+        
+        <RelatedCalculators
+          currentCategory="fisco-e-lavoro-autonomo"
+          currentSlug={params.slug}
+          lang="it"
+        />
     </div>
   );
 }
+

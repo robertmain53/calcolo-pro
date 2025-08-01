@@ -1,35 +1,78 @@
 "use client";
 import React, { useState } from 'react';
 
-interface TassazioneAgentiImmobilariInpsCalculatorProps {}
+interface CalculatorState {
+  redditoLordo: number;
+  speseDeducibili: number;
+  redditoNetto: number;
+}
 
-const TassazioneAgentiImmobilariInpsCalculator: React.FC<TassazioneAgentiImmobilariInpsCalculatorProps> = () => {
-    const [income, setIncome] = useState<string>('');
-    const [tax, setTax] = useState<number>(0);
+const TassazioneAgentiImmobiliariInpsCalculator: React.FC = () => {
+  const [calculatorState, setCalculatorState] = useState<CalculatorState>({
+    redditoLordo: 0,
+    speseDeducibili: 0,
+    redditoNetto: 0,
+  });
 
-    const calculateTax = (income: string) => {
-        const numericIncome = parseFloat(income);
-        if (!isNaN(numericIncome)) {
-            const inpsTax = numericIncome * 0.25; // Assumed INPS tax rate
-            const additionalTax = numericIncome * 0.10; // Assumed additional tax rate
-            const totalTax = inpsTax + additionalTax;
-            setTax(totalTax);
-        }
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setCalculatorState((prevState) => ({
+      ...prevState,
+      [name]: parseFloat(value),
+    }));
+  };
+
+  React.useEffect(() => {
+    const calcolaRedditoNetto = () => {
+      const { redditoLordo, speseDeducibili } = calculatorState;
+      const redditoNetto = redditoLordo - speseDeducibili;
+      setCalculatorState((prevState) => ({ ...prevState, redditoNetto }));
     };
+    calcolaRedditoNetto();
+  }, [calculatorState.redditoLordo, calculatorState.speseDeducibili]);
 
-    return (
-        <div className='p-4 bg-gray-50 rounded-lg shadow-md'>
-            <h1 className='text-xl font-bold text-gray-700'>Calcolatore Tassazione per Agenti Immobiliari (con INPS Commercianti)</h1>
-            <p className='mb-4 text-gray-600'>Calcola le tasse dovute includendo l&apos;INPS per l&apos;attività di agente immobiliare.</p>
-            <input type='text'
-                   className='px-3 py-2 border rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500'
-                   value={income}
-                   onChange={e => setIncome(e.target.value)}
-                   onBlur={() => calculateTax(income)}
-                   placeholder='Inserisci il tuo reddito'/>
-            <p className='mt-2 text-gray-800'>Tassa calcolata: € {tax.toFixed(2)}</p>
+  return (
+    <div className="p-4 bg-white rounded-lg shadow-md">
+      <h1>Calcolatore Tassazione per Agenti Immobiliari (con INPS Commercianti)</h1>
+      <p>Calcolatore Tassazione per Agenti Immobiliari (con INPS Commercianti)</p>
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="redditoLordo" className="block text-gray-700 font-bold mb-2">
+            Reddito Lordo:
+          </label>
+          <input
+            type="number"
+            id="redditoLordo"
+            name="redditoLordo"
+            value={calculatorState.redditoLordo}
+            onChange={handleInputChange}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
         </div>
-    );
+        <div>
+          <label htmlFor="speseDeducibili" className="block text-gray-700 font-bold mb-2">
+            Spese Deducibili:
+          </label>
+          <input
+            type="number"
+            id="speseDeducibili"
+            name="speseDeducibili"
+            value={calculatorState.speseDeducibili}
+            onChange={handleInputChange}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+      </div>
+      <div className="mt-4">
+        <label className="block text-gray-700 font-bold mb-2">
+          Reddito Netto:
+        </label>
+        <p className="text-lg font-bold text-green-500">
+          {calculatorState.redditoNetto.toFixed(2)} €
+        </p>
+      </div>
+    </div>
+  );
 };
 
-export default TassazioneAgentiImmobilariInpsCalculator;
+export default TassazioneAgentiImmobiliariInpsCalculator;
