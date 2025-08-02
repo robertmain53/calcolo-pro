@@ -1,9 +1,12 @@
-# *
 User-agent: *
-Allow: /
+# Block language folders
+Disallow: /es/
+Disallow: /en/
+Disallow: /fr/
 
-# Host
-Host: https://socalsolver.com
+# Preferred host (optional, Yandex only)
+# Host: socalsolver.com
 
-# Sitemaps
+# Sitemap
 Sitemap: https://socalsolver.com/sitemap.xml
+
