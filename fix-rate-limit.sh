@@ -1,3 +1,14 @@
+#!/bin/bash
+
+echo "🚀 Fixing Gemini rate limit issues in automation.js"
+echo "=================================================="
+
+# Backup del file originale
+cp automation.js automation.js.backup
+echo "📄 Backup created: automation.js.backup"
+
+# Crea la versione corretta con rate limiting migliorato
+cat > automation_fixed.js << 'EOF'
 import fs from 'fs/promises';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -652,3 +663,30 @@ async function main() {
 // ========================================
 await logger.info('INIT', 'Sistema inizializzato con rate limiting migliorato, avvio processo...');
 main();
+EOF
+
+# Sostituisci il file originale
+mv automation_fixed.js automation.js
+echo "✅ automation.js aggiornato con rate limiting migliorato"
+
+echo ""
+echo "🔧 CORREZIONI APPLICATE:"
+echo "   ⏰ Rate limiting migliorato: 45s tra chiamate API"
+echo "   🚀 Batch delay: 2 minuti tra calcolatori completi"
+echo "   📊 Statistiche API calls e rate limit hits"
+echo "   🔄 Ridotti tentativi da 3 a 2 per evitare spam"
+echo "   ⏸️  Countdown visuale durante le pause"
+echo ""
+echo "📈 TIMING AGGIORNATO:"
+echo "   • 45 secondi tra chiamata componente e contenuto"
+echo "   • 2 minuti tra un calcolatore completo e il successivo"
+echo "   • ~180 secondi totali per calcolatore (vs 120s precedenti)"
+echo ""
+echo "🚀 Ora puoi rilanciare:"
+echo "   node automation.js"
+echo ""
+echo "💡 Il nuovo timing dovrebbe evitare i rate limits di Gemini"
+EOF
+
+chmod +x fix-rate-limit.sh
+echo "✅ Script creato: fix-rate-limit.sh"
