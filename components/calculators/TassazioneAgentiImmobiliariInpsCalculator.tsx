@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface CalculatorState {
   redditoLordo: number;
@@ -18,11 +18,11 @@ const TassazioneAgentiImmobiliariInpsCalculator: React.FC = () => {
     const { name, value } = event.target;
     setCalculatorState((prevState) => ({
       ...prevState,
-      [name]: parseFloat(value),
+      [name]: parseFloat(value) || 0,
     }));
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const calcolaRedditoNetto = () => {
       const { redditoLordo, speseDeducibili } = calculatorState;
       const redditoNetto = redditoLordo - speseDeducibili;

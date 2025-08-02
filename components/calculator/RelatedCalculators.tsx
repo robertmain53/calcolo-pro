@@ -1,6 +1,6 @@
 // components/calculator/RelatedCalculators.tsx
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { 
   ChevronRightIcon, 
@@ -22,7 +22,6 @@ interface RelatedCalculatorsProps {
 }
 
 // Mapping delle categorie con i loro calcolatori
-// Questo sarà popolato dinamicamente dai file generati dall'automazione
 const CATEGORY_CALCULATORS: Record<string, Calculator[]> = {
   'fisco-e-lavoro-autonomo': [
     { name: 'Tasse Regime Forfettario', slug: 'tasse-regime-forfettario', description: 'Calcola tasse, acconti e saldi per il regime forfettario' },
@@ -104,11 +103,7 @@ export default function RelatedCalculators({
   const [relatedCalculators, setRelatedCalculators] = useState<Calculator[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    loadRelatedCalculators();
-  }, [currentCategory, currentSlug]);
-
-  const loadRelatedCalculators = () => {
+  const loadRelatedCalculators = useCallback(() => {
     setIsLoading(true);
     
     try {
@@ -129,7 +124,11 @@ export default function RelatedCalculators({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [currentCategory, currentSlug, maxItems]);
+
+  useEffect(() => {
+    loadRelatedCalculators();
+  }, [loadRelatedCalculators]);
 
   const refreshSuggestions = () => {
     loadRelatedCalculators();
@@ -154,7 +153,7 @@ export default function RelatedCalculators({
   }
 
   if (relatedCalculators.length === 0) {
-    return null; // Non mostrare nulla se non ci sono calcolatori correlati
+    return null;
   }
 
   const categoryIcon = CATEGORY_ICONS[currentCategory] || '📊';

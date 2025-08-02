@@ -2,6 +2,7 @@
 import React, { useState, createContext, useContext } from 'react';
 import ToolsSidebar from './ToolsSidebar';
 
+// Context per condividere dati tra calcolatore e sidebar
 interface CalculatorContextType {
   results: Record<string, number>;
   inputs: Record<string, any>;
@@ -21,6 +22,8 @@ export const useCalculator = () => useContext(CalculatorContext);
 interface CalculatorWrapperProps {
   children: React.ReactNode;
   calculatorName: string;
+  category?: string;
+  slug?: string;
   lang?: string;
 }
 
@@ -40,12 +43,22 @@ export default function CalculatorWrapper({
     setInputs(newInputs);
   };
 
+  const contextValue: CalculatorContextType = {
+    results,
+    inputs,
+    updateResults,
+    updateInputs,
+  };
+
   return (
-    <CalculatorContext.Provider value={{ results, inputs, updateResults, updateInputs }}>
+    <CalculatorContext.Provider value={contextValue}>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Calculator */}
         <div className="lg:col-span-2 p-8 bg-white rounded-2xl shadow-lg">
           {children}
         </div>
+        
+        {/* Enhanced Sidebar */}
         <ToolsSidebar 
           calculatorName={calculatorName}
           results={results}
