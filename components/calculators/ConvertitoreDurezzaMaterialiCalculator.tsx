@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React, { useState } from 'react';
 
 interface HardnessData {
@@ -7,8 +7,12 @@ interface HardnessData {
   vickers: number | null;
 }
 
-const ConvertitoreDurezzaMaterialiCalculator: React.FC = () => {
-  const [hardness, setHardness] = useState<HardnessData>({ brinell: null, rockwell: null, vickers: null });
+export default function ConvertitoreDurezzaMaterialiCalculator() {
+  const [hardness, setHardness] = useState<HardnessData>({
+    brinell: null,
+    rockwell: null,
+    vickers: null,
+  });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -18,49 +22,32 @@ const ConvertitoreDurezzaMaterialiCalculator: React.FC = () => {
     }));
   };
 
-  // Conversion functions (replace with actual conversion logic)
-  const convertBrinellToRockwell = (brinell: number): number => {
-    // Implement conversion logic here
-    return brinell * 0.5; // Placeholder
-  };
-
-  const convertBrinellToVickers = (brinell: number): number => {
-    // Implement conversion logic here
-    return brinell * 0.8; // Placeholder
-  };
-
-  const convertRockwellToBrinell = (rockwell: number): number => {
-    // Implement conversion logic here
-    return rockwell * 2; // Placeholder
-  };
-
-  const convertRockwellToVickers = (rockwell: number): number => {
-    // Implement conversion logic here
-    return rockwell * 1.6; // Placeholder
-  };
-
-  const convertVickersToBrinell = (vickers: number): number => {
-    // Implement conversion logic here
-    return vickers * 1.25; // Placeholder
-  };
-
-  const convertVickersToRockwell = (vickers: number): number => {
-    // Implement conversion logic here
-    return vickers * 0.625; // Placeholder
-  };
+  // Placeholder conversion formulas – replace with real ones
+  const convertBrinellToRockwell = (b: number) => b * 0.5;
+  const convertBrinellToVickers = (b: number) => b * 0.8;
+  const convertRockwellToBrinell = (r: number) => r * 2;
+  const convertRockwellToVickers = (r: number) => r * 1.6;
+  const convertVickersToBrinell = (v: number) => v * 1.25;
+  const convertVickersToRockwell = (v: number) => v * 0.625;
 
   return (
     <div className="p-4 bg-gray-100 rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-2">Convertitore Durezza Materiali</h1>
-      <p className="text-gray-600 mb-4">Converte tra Brinell (HB), Rockwell (HRC) e Vickers (HV).</p>
+      <p className="text-gray-600 mb-4">
+        Converte tra Brinell (HB), Rockwell (HRC) e Vickers (HV).
+      </p>
+
       <div className="grid grid-cols-3 gap-4">
+        {/* Brinell */}
         <div>
-          <label htmlFor="brinell" className="block text-gray-700 font-bold mb-2">Brinell (HB):</label>
+          <label htmlFor="brinell" className="block text-gray-700 font-bold mb-2">
+            Brinell (HB):
+          </label>
           <input
             type="number"
             id="brinell"
             name="brinell"
-            value={hardness.brinell || ''}
+            value={hardness.brinell ?? ''}
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
@@ -71,13 +58,17 @@ const ConvertitoreDurezzaMaterialiCalculator: React.FC = () => {
             </>
           )}
         </div>
+
+        {/* Rockwell */}
         <div>
-          <label htmlFor="rockwell" className="block text-gray-700 font-bold mb-2">Rockwell (HRC):</label>
+          <label htmlFor="rockwell" className="block text-gray-700 font-bold mb-2">
+            Rockwell (HRC):
+          </label>
           <input
             type="number"
             id="rockwell"
             name="rockwell"
-            value={hardness.rockwell || ''}
+            value={hardness.rockwell ?? ''}
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
@@ -88,13 +79,17 @@ const ConvertitoreDurezzaMaterialiCalculator: React.FC = () => {
             </>
           )}
         </div>
+
+        {/* Vickers */}
         <div>
-          <label htmlFor="vickers" className="block text-gray-700 font-bold mb-2">Vickers (HV):</label>
+          <label htmlFor="vickers" className="block text-gray-700 font-bold mb-2">
+            Vickers (HV):
+          </label>
           <input
             type="number"
             id="vickers"
             name="vickers"
-            value={hardness.vickers || ''}
+            value={hardness.vickers ?? ''}
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
@@ -102,12 +97,10 @@ const ConvertitoreDurezzaMaterialiCalculator: React.FC = () => {
             <>
               <p>Brinell (HB): {convertVickersToBrinell(hardness.vickers)}</p>
               <p>Rockwell (HRC): {convertVickersToRockwell(hardness.vickers)}</p>
-            <>
+            </>
           )}
         </div>
       </div>
     </div>
   );
-};
-
-export default ConvertitoreDurezzaMaterialiCalculator;
+}

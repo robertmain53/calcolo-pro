@@ -2,33 +2,47 @@
 import React, { useState } from 'react';
 
 interface CalculatorData {
-  tensioneNominale: number;
-  corrente: number;
-  resistenzaLinea: number;
-  lunghezzaLinea: number;
+  tensioneNominale?: number;
+  corrente?: number;
+  resistenzaLinea?: number;
+  lunghezzaLinea?: number;
   fase: "monofase" | "trifase";
 }
 
 const CalcoloCadutaTensioneCalculator: React.FC = () => {
-  const [calculatorData, setCalculatorData] = useState<CalculatorData | null>(null);
+  const [calculatorData, setCalculatorData] = useState<CalculatorData>({
+    fase: "monofase",
+  });
   const [risultato, setRisultato] = useState<number | null>(null);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setCalculatorData((prevData) => ({
       ...prevData,
-      [name]: parseFloat(value),
+      [name]: value === '' ? undefined : parseFloat(value),
     }));
   };
 
   const handleFaseChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setCalculatorData((prevData) => ({ ...prevData, fase: event.target.value }));
+    setCalculatorData((prevData) => ({
+      ...prevData,
+      fase: event.target.value as "monofase" | "trifase",
+    }));
   };
 
   const calculate = () => {
-    if (!calculatorData) return;
-    const { tensioneNominale, corrente, resistenzaLinea, lunghezzaLinea, fase } = calculatorData;
-    const cadutaTensione = fase === "monofase" ? 2 * corrente * resistenzaLinea : Math.sqrt(3) * corrente * resistenzaLinea;
+    const { corrente, resistenzaLinea, fase } = calculatorData;
+
+    if (corrente === undefined || resistenzaLinea === undefined || !fase) {
+      setRisultato(null);
+      return;
+    }
+
+    const cadutaTensione =
+      fase === "monofase"
+        ? 2 * corrente * resistenzaLinea
+        : Math.sqrt(3) * corrente * resistenzaLinea;
+
     setRisultato(cadutaTensione);
   };
 
@@ -41,6 +55,7 @@ const CalcoloCadutaTensioneCalculator: React.FC = () => {
           type="number"
           name="tensioneNominale"
           placeholder="Tensione Nominale (V)"
+          value={calculatorData.tensioneNominale ?? ''}
           onChange={handleInputChange}
           className="border border-gray-300 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
@@ -48,6 +63,7 @@ const CalcoloCadutaTensioneCalculator: React.FC = () => {
           type="number"
           name="corrente"
           placeholder="Corrente (A)"
+          value={calculatorData.corrente ?? ''}
           onChange={handleInputChange}
           className="border border-gray-300 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
@@ -55,6 +71,7 @@ const CalcoloCadutaTensioneCalculator: React.FC = () => {
           type="number"
           name="resistenzaLinea"
           placeholder="Resistenza Linea (Ω)"
+          value={calculatorData.resistenzaLinea ?? ''}
           onChange={handleInputChange}
           className="border border-gray-300 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
@@ -62,18 +79,23 @@ const CalcoloCadutaTensioneCalculator: React.FC = () => {
           type="number"
           name="lunghezzaLinea"
           placeholder="Lunghezza Linea (m)"
+          value={calculatorData.lunghezzaLinea ?? ''}
           onChange={handleInputChange}
           className="border border-gray-300 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <select
           name="fase"
+          value={calculatorData.fase}
           onChange={handleFaseChange}
           className="border border-gray-300 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="monofase">Monofase</option>
           <option value="trifase">Trifase</option>
         </select>
-        <button onClick={calculate} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+        <button
+          onClick={calculate}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
           Calcola
         </button>
       </div>

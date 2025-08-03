@@ -38,15 +38,15 @@ export default async function CalculatorPage({ params }: Props) {
     <div className="space-y-8">
         <Breadcrumb crumbs={crumbs} />
         
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             {/* Calculator */}
-            <div className="lg:col-span-2 p-8 bg-white rounded-2xl shadow-lg">
+            <div className="lg:col-span-2 p-2 bg-white rounded-2xl shadow-lg">
                 <CalculatorComponent />
             </div>
             
             {/* Sidebar */}
             <div className="lg:col-span-1">
-                <div className="p-6 bg-white rounded-2xl shadow-lg">
+                <div className="p-2 bg-white rounded-2xl shadow-lg">
                     <h3 className="text-xl font-bold mb-4">Strumenti</h3>
                     <div className="space-y-2">
                         <button className="w-full p-3 text-left rounded-lg hover:bg-gray-100 transition-colors">

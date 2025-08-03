@@ -1,68 +1,102 @@
-"use client";
+'use client';
 import React, { useState } from 'react';
 
 interface IsolamentoAcusticoProps {
+  /**
+   * D2m – livello di pressione sonora esterna normalizzato (dB)
+   */
   D2m?: number;
+  /**
+   * nT – tempo di riverberazione interno (s)
+   */
   nT?: number;
+  /**
+   * w – fattore di correzione (dB)
+   */
   w?: number;
 }
 
-const IsolamentoAcusticoFacciataCalculator: React.FC<IsolamentoAcusticoProps> = ({ D2m, nT, w }) => {
-  const [d2m, setD2m] = useState<number | undefined>(D2m);
-  const [nT, setnT] = useState<number | undefined>(nT);
-  const [w, setW] = useState<number | undefined>(w);
+/**
+ * Calcolatore dell’indice di isolamento acustico di facciata R<sub>w</sub>.
+ * Formula semplificata di esempio:
+ *
+ *     Rw = D2m + 10 · log10(nT) + w
+ *
+ * **N.B.** : Rimpiazza la formula con quella prescritta dalla UNI EN ISO 12354‑3.
+ */
+export default function IsolamentoAcusticoFacciataCalculator({
+  D2m: initialD2m = 0,
+  nT: initialNT = 0.5,
+  w: initialW = 0,
+}: IsolamentoAcusticoProps) {
+  const [d2m, setD2m] = useState<number | undefined>(initialD2m);
+  const [nT, setNT] = useState<number | undefined>(initialNT);
+  const [w, setW] = useState<number | undefined>(initialW);
 
-  const handleD2mChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setD2m(parseFloat(event.target.value));
-  };
-
-  const handleNTChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setnT(parseFloat(event.target.value));
-  };
-
-  const handleWChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setW(parseFloat(event.target.value));
+  const calcolaRw = () => {
+    if (d2m === undefined || nT === undefined || w === undefined || nT <= 0) return '';
+    return d2m + 10 * Math.log10(nT) + w;
   };
 
   return (
     <div className="p-4 bg-gray-100 rounded-lg shadow-md">
-      <h1>Calcolatore Isolamento Acustico di Facciata</h1>
-      <p>Questo calcolatore aiuta a determinare l'isolamento acustico di una facciata secondo la norma UNI EN ISO 12354-3.</p>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-        <div>
-          <label htmlFor="d2m" className="block text-gray-700 font-bold mb-2">D2m:</label>
-          <input
-            type="number"
-            id="d2m"
-            value={d2m || ''}
-            onChange={handleD2mChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
-        <div>
-          <label htmlFor="nT" className="block text-gray-700 font-bold mb-2">nT:</label>
-          <input
-            type="number"
-            id="nT"
-            value={nT || ''}
-            onChange={handleNTChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
-        <div>
-          <label htmlFor="w" className="block text-gray-700 font-bold mb-2">w:</label>
-          <input
-            type="number"
-            id="w"
-            value={w || ''}
-            onChange={handleWChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
+      <h1 className="text-2xl font-bold mb-4">Calcolatore Isolamento Acustico di Facciata</h1>
+
+      {/* Input D2m */}
+      <div className="mb-4">
+        <label htmlFor="d2m" className="block text-sm font-medium text-gray-700">
+          D₂m (dB):
+        </label>
+        <input
+          id="d2m"
+          type="number"
+          step="0.1"
+          value={d2m ?? ''}
+          onChange={(e) =>
+            setD2m(e.target.value === '' ? undefined : parseFloat(e.target.value))
+          }
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
       </div>
-      {/* Aggiungere qui la logica di calcolo e visualizzazione dei risultati */}
+
+      {/* Input nT */}
+      <div className="mb-4">
+        <label htmlFor="nt" className="block text-sm font-medium text-gray-700">
+          nT (s):
+        </label>
+        <input
+          id="nt"
+          type="number"
+          step="0.01"
+          value={nT ?? ''}
+          onChange={(e) =>
+            setNT(e.target.value === '' ? undefined : parseFloat(e.target.value))
+          }
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
+      </div>
+
+      {/* Input w */}
+      <div className="mb-6">
+        <label htmlFor="w" className="block text-sm font-medium text-gray-700">
+          w (dB):
+        </label>
+        <input
+          id="w"
+          type="number"
+          step="0.1"
+          value={w ?? ''}
+          onChange={(e) =>
+            setW(e.target.value === '' ? undefined : parseFloat(e.target.value))
+          }
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
+      </div>
+
+      {/* Output */}
+      <div className="text-lg font-semibold">
+        R<sub>w</sub>: {calcolaRw() !== '' ? calcolaRw().toFixed(2) : '—'} dB
+      </div>
     </div>
   );
-};
-
-export default IsolamentoAcusticoFacciataCalculator;
+}

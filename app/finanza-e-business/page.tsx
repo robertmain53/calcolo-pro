@@ -37,7 +37,7 @@ export default async function CategoryPage() {
         {calculators.map((calc) => (
             <Link 
               key={calc.slug} 
-              href={`/finanza-e-business'/${calc.slug}`} 
+              href={`/finanza-e-business/${calc.slug}`} 
               className="block p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
             >
               <h2 className="font-bold text-xl text-slate-800 mb-2 hover:text-blue-600 transition-colors">

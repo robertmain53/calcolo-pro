@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 interface PercentageCalculatorProps {
   title: string;
@@ -7,34 +7,30 @@ interface PercentageCalculatorProps {
 }
 
 const PercentageCalculator: React.FC<PercentageCalculatorProps> = ({ title, description }) => {
-  const [value1, setValue1] = useState<number | ''>('');
-  const [value2, setValue2] = useState<number | ''>('');
+  const [value1, setValue1] = useState<number | undefined>();
+  const [value2, setValue2] = useState<number | undefined>();
   const [percentage, setPercentage] = useState<number | null>(null);
   const [result, setResult] = useState<number | null>(null);
 
   const calculatePercentage = () => {
-    if (value1 === '' || value2 === '') {
+    if (value1 === undefined || value2 === undefined || value1 === 0) {
       setPercentage(null);
       setResult(null);
       return;
     }
-    const num1 = parseFloat(value1);
-    const num2 = parseFloat(value2);
-    const calcPercentage = (num2 / num1) * 100;
+    const calcPercentage = (value2 / value1) * 100;
     setPercentage(calcPercentage);
-    setResult(num2);
+    setResult(value2);
   };
 
   const calculateValue = () => {
-    if (value1 === '' || value2 === '') {
+    if (value1 === undefined || value2 === undefined) {
       setPercentage(null);
       setResult(null);
       return;
     }
-    const num1 = parseFloat(value1);
-    const num2 = parseFloat(value2);
-    const calcValue = (num1 * num2) / 100;
-    setPercentage(num2);
+    const calcValue = (value1 * value2) / 100;
+    setPercentage(value2);
     setResult(calcValue);
   };
 
@@ -50,8 +46,8 @@ const PercentageCalculator: React.FC<PercentageCalculatorProps> = ({ title, desc
           type="number"
           id="value1"
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          value={value1}
-          onChange={(e) => setValue1(e.target.value)}
+          value={value1 ?? ''}
+          onChange={(e) => setValue1(e.target.value === '' ? undefined : parseFloat(e.target.value))}
         />
       </div>
       <div className="mb-4">
@@ -62,8 +58,8 @@ const PercentageCalculator: React.FC<PercentageCalculatorProps> = ({ title, desc
           type="number"
           id="value2"
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          value={value2}
-          onChange={(e) => setValue2(e.target.value)}
+          value={value2 ?? ''}
+          onChange={(e) => setValue2(e.target.value === '' ? undefined : parseFloat(e.target.value))}
         />
       </div>
       <div className="flex space-x-4">
