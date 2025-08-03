@@ -15,7 +15,6 @@ interface ToolsSidebarProps {
   calculatorName: string;
   results?: Record<string, number>;
   inputs?: Record<string, any>;
-  lang?: string;
 }
 
 interface SavedCalculation {
@@ -30,7 +29,7 @@ export default function ToolsSidebar({
   calculatorName, 
   results = {}, 
   inputs = {},
-  lang = 'it'
+   
 }: ToolsSidebarProps) {
   const [isSaving, setIsSaving] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
@@ -196,16 +195,11 @@ export default function ToolsSidebar({
   };
 
   const generatePDFContent = () => {
-    const currentDate = new Date().toLocaleDateString(lang === 'it' ? 'it-IT' : 'en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
+    const currentDate = new Date().toLocaleDateString();
 
     return `
       <!DOCTYPE html>
-      <html lang="${lang}">
+      <html >
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -363,13 +357,13 @@ export default function ToolsSidebar({
       </html>
     `.replace(/formatValue\(([^)]+)\)/g, (match, value) => {
       // Funzione per formattare i valori nel template string
-      return typeof value === 'number' ? value.toLocaleString(lang === 'it' ? 'it-IT' : 'en-US') : String(value);
+      return typeof value === 'number' ? value.toLocaleString() : String(value);
     });
   };
 
   const formatValue = (value: any): string => {
     if (typeof value === 'number') {
-      return value.toLocaleString(lang === 'it' ? 'it-IT' : 'en-US');
+      return value.toLocaleString();
     }
     return String(value);
   };
@@ -486,7 +480,7 @@ export default function ToolsSidebar({
           </div>
           <div className="flex justify-between">
             <span>Aggiornato:</span>
-            <span className="font-medium">{new Date().toLocaleTimeString(lang === 'it' ? 'it-IT' : 'en-US', { hour: '2-digit', minute: '2-digit' })}</span>
+            <span className="font-medium">{new Date().toLocaleTimeString()}</span>
           </div>
         </div>
       </div>
@@ -525,7 +519,7 @@ export default function ToolsSidebar({
                         </button>
                       </div>
                       <p className="text-sm text-gray-500 mb-2">
-                        {new Date(calc.savedAt).toLocaleString(lang === 'it' ? 'it-IT' : 'en-US')}
+                        {new Date(calc.savedAt).toLocaleString()}
                       </p>
                       <div className="text-sm">
                         <span className="text-gray-600">Risultati: </span>

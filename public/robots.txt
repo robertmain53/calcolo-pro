@@ -1,12 +1,9 @@
+# *
 User-agent: *
-# Block language folders
-Disallow: /es/
-Disallow: /en/
-Disallow: /fr/
+Allow: /
 
-# Preferred host (optional, Yandex only)
-# Host: socalsolver.com
+# Host
+Host: https://calcolo.online
 
-# Sitemap
-Sitemap: https://socalsolver.com/sitemap.xml
-
+# Sitemaps
+Sitemap: https://calcolo.online/sitemap.xml

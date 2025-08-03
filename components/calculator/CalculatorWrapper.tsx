@@ -30,7 +30,7 @@ interface CalculatorWrapperProps {
 export default function CalculatorWrapper({ 
   children, 
   calculatorName,
-  lang = 'it'
+  
 }: CalculatorWrapperProps) {
   const [results, setResults] = useState<Record<string, number>>({});
   const [inputs, setInputs] = useState<Record<string, any>>({});
@@ -63,7 +63,7 @@ export default function CalculatorWrapper({
           calculatorName={calculatorName}
           results={results}
           inputs={inputs}
-          lang={lang}
+           
         />
       </div>
     </CalculatorContext.Provider>

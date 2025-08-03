@@ -1,86 +1,22 @@
 "use client";
 import React, { useState } from 'react';
 
-interface CalculatorState {
-  redditoLordo: number;
-  ocf: number;
-  tasse: number;
-  redditoNetto: number;
-}
-
 const TassazioneConsulentiFinanziariOcfCalculator: React.FC = () => {
-  const [calculatorState, setCalculatorState] = useState<CalculatorState>({ 
-    redditoLordo: 0,
-    ocf: 0,
-    tasse: 0,
-    redditoNetto: 0,
-  });
+  const [inputValue, setInputValue] = useState<number>(0);
+  const [result, setResult] = useState<number>(0);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setCalculatorState((prevState) => ({
-      ...prevState,
-      [name]: parseFloat(value),
-    }));
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(parseInt(e.target.value) || 0);
   };
 
-  React.useEffect(() => {
-    // Calcolo tasse (logica semplificata per esempio)
-    const tasse = calculatorState.redditoLordo * 0.25 - calculatorState.ocf; // esempio di calcolo
-    const redditoNetto = calculatorState.redditoLordo - tasse;
-    setCalculatorState((prevState) => ({...prevState, tasse, redditoNetto}));
-  }, [calculatorState.redditoLordo, calculatorState.ocf]);
+  // Inserisci qui la logica di calcolo
 
   return (
-    <div className="p-4 bg-gray-100 rounded-lg shadow-md">
+    <div className="p-4">
       <h1>Calcolatore Tassazione per Consulenti Finanziari (con OCF)</h1>
-      <p>Calcolatore Tassazione per Consulenti Finanziari (con OCF)</p>
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label htmlFor="redditoLordo" className="block text-gray-700 font-bold mb-2">Reddito Lordo:</label>
-          <input
-            type="number"
-            id="redditoLordo"
-            name="redditoLordo"
-            value={calculatorState.redditoLordo}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
-        <div>
-          <label htmlFor="ocf" className="block text-gray-700 font-bold mb-2">OCF:</label>
-          <input
-            type="number"
-            id="ocf"
-            name="ocf"
-            value={calculatorState.ocf}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
-        <div>
-          <label htmlFor="tasse" className="block text-gray-700 font-bold mb-2">Tasse:</label>
-          <input
-            type="number"
-            id="tasse"
-            name="tasse"
-            value={calculatorState.tasse}
-            readOnly
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
-        <div>
-          <label htmlFor="redditoNetto" className="block text-gray-700 font-bold mb-2">Reddito Netto:</label>
-          <input
-            type="number"
-            id="redditoNetto"
-            name="redditoNetto"
-            value={calculatorState.redditoNetto}
-            readOnly
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
-      </div>
+      <p>Calcola carico fiscale e contributivo tipico dei consulenti finanziari iscritti all'Albo OCF, con dettaglio di acconti e saldo.</p>
+      <input type="number" value={inputValue} onChange={handleInputChange} className="border p-2 m-2" />
+      <div>Risultato: {result}</div>
     </div>
   );
 };

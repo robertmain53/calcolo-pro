@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: 'https://socalsolver.com',
+  siteUrl: 'https://calcolo.online',
   generateRobotsTxt: true, // (optional)
   // ...other options
 }

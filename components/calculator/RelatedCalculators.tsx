@@ -17,8 +17,7 @@ interface Calculator {
 interface RelatedCalculatorsProps {
   currentCategory: string;
   currentSlug: string;
-  lang: string;
-  maxItems?: number;
+   maxItems?: number;
 }
 
 // Mapping delle categorie con i loro calcolatori
@@ -97,7 +96,7 @@ const CATEGORY_ICONS: Record<string, string> = {
 export default function RelatedCalculators({ 
   currentCategory, 
   currentSlug, 
-  lang = 'it',
+  
   maxItems = 6 
 }: RelatedCalculatorsProps) {
   const [relatedCalculators, setRelatedCalculators] = useState<Calculator[]>([]);
@@ -188,7 +187,7 @@ export default function RelatedCalculators({
         {relatedCalculators.map((calculator, index) => (
           <Link
             key={`${calculator.slug}-${index}`}
-            href={`/${lang}/${currentCategory}/${calculator.slug}`}
+            href={`/${currentCategory}/${calculator.slug}`}
             className="group block bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 hover:border-blue-200"
           >
             <div className="p-6">
@@ -229,7 +228,7 @@ export default function RelatedCalculators({
       {/* Link alla categoria completa */}
       <div className="mt-8 text-center">
         <Link
-          href={`/${lang}/${currentCategory}`}
+          href={`/${currentCategory}`}
           className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition-colors duration-200 shadow-lg hover:shadow-xl"
         >
           <span>Vedi tutti i calcolatori di questa categoria</span>
