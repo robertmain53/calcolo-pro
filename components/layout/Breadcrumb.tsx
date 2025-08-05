@@ -1,3 +1,4 @@
+import MathBlock from '@/components/ui/MathBlock';
 import Link from 'next/link';
 
 type Crumb = { name: string; path?: string; }

@@ -1,83 +1,67 @@
-"use client";
+'use client';
+
 import React, { useState } from 'react';
 
-interface EquationSystem2x2 {
-  a: number;
-  b: number;
-  c: number;
-  d: number;
-  e: number;
-  f: number;
+/** Coefficienti di un sistema 2×2:
+ *  a·x + b·y = e
+ *  c·x + d·y = f
+ */
+interface Eq2 {
+  a: string; b: string; c: string; d: string; e: string; f: string;
 }
 
-interface EquationSystem3x3 {
-  a: number;
-  b: number;
-  c: number;
-  d: number;
-  e: number;
-  f: number;
-  g: number;
-  h: number;
-  i: number;
-  j: number;
-  k: number;
-  l: number;
-}
+const empty2: Eq2 = { a: '', b: '', c: '', d: '', e: '', f: '' };
 
 const RisoluzioneEquazioniLineariCalculator: React.FC = () => {
-  const [system2x2, setSystem2x2] = useState<EquationSystem2x2 | null>(null);
-  const [system3x3, setSystem3x3] = useState<EquationSystem3x3 | null>(null);
-  const [result, setResult] = useState<string | null>(null);
+  const [sys2, setSys2] = useState<Eq2>(empty2);
+  const [result, setResult] = useState<string>('');
 
-  const handle2x2Change = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setSystem2x2({ ...system2x2, [name]: parseFloat(value) });
+  const handle2Change = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setSys2(prev => ({ ...prev, [name as keyof Eq2]: value }));
   };
 
-  const handle3x3Change = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setSystem3x3({ ...system3x3, [name]: parseFloat(value) });
-  };
-
-  const calculate2x2 = () => {
-    if (system2x2) {
-      const determinant = system2x2.a * system2x2.d - system2x2.b * system2x2.c;
-      if (determinant === 0) {
-        setResult('Il sistema non ha una soluzione unica.');
-      } else {
-        const x = (system2x2.e * system2x2.d - system2x2.b * system2x2.f) / determinant;
-        const y = (system2x2.a * system2x2.f - system2x2.e * system2x2.c) / determinant;
-        setResult(`x = ${x}, y = ${y}`);
-      }
-    }
-  };
-
-  const calculate3x3 = () => {
-    setResult('Calcolo 3x3 non ancora implementato.');
+  const solve2x2 = () => {
+    const { a, b, c, d, e, f } = sys2;
+    const A = parseFloat(a), B = parseFloat(b), C = parseFloat(c), D = parseFloat(d), E = parseFloat(e), F = parseFloat(f);
+    if ([A,B,C,D].some(n => isNaN(n))) return setResult('Inserisci tutti i coefficienti');
+    const det = A * D - B * C;
+    if (det === 0) return setResult('Il sistema non ha soluzione unica');
+    const x = (E * D - B * F) / det;
+    const y = (A * F - E * C) / det;
+    setResult(`x ≈ ${x.toFixed(3)}, y ≈ ${y.toFixed(3)}`);
   };
 
   return (
-    <div className="p-4">
-      <h1>Risoluzione Sistemi di Equazioni Lineari (2x2 e 3x3)</h1>
-      <p>Questo calcolatore risolve sistemi di equazioni lineari 2x2 e 3x3.</p>
-      <div className="mb-4">
-        <h2>Sistema 2x2</h2>
-        <div className="grid grid-cols-2 gap-2">
-          <input type="number" name="a" onChange={handle2x2Change} placeholder="a" className="border border-gray-300 p-2" />
-          <input type="number" name="b" onChange={handle2x2Change} placeholder="b" className="border border-gray-300 p-2" />
-          <input type="number" name="c" onChange={handle2x2Change} placeholder="c" className="border border-gray-300 p-2" />
-          <input type="number" name="d" onChange={handle2x2Change} placeholder="d" className="border border-gray-300 p-2" />
-          <input type="number" name="e" onChange={handle2x2Change} placeholder="e" className="border border-gray-300 p-2" />
-          <input type="number" name="f" onChange={handle2x2Change} placeholder="f" className="border border-gray-300 p-2" />
-        </div>
-        <button onClick={calculate2x2} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Calcola</button>
+    <div className="p-4 bg-gray-100 rounded-lg shadow-md">
+      <h1 className="text-2xl font-bold mb-4">Sistemi lineari 2×2</h1>
+
+      <div className="grid grid-cols-2 gap-2 mb-4">
+        {(['a','b','c','d','e','f'] as (keyof Eq2)[]).map((k) => (
+          <input
+            key={k}
+            name={k}
+            type="number"
+            placeholder={k}
+            value={sys2[k]}
+            onChange={handle2Change}
+            className="border rounded p-2"
+          />
+        ))}
       </div>
-      <div className="mb-4">
-        <h2>Sistema 3x3</h2>
-        <p>Funzionalità in fase di sviluppo.</p>
-      </div>
-      {result && <p>Risultato: {result}</p>}
+
+      <button
+        type="button"
+        onClick={solve2x2}
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Risolvi 2×2
+      </button>
+
+      <p className="mt-4 font-bold text-indigo-700">{result}</p>
+
+      <h2 className="mt-8 text-xl font-semibold">Sistema 3×3</h2>
+      <p className="text-gray-600">Funzionalità in sviluppo.</p>
     </div>
   );
 };

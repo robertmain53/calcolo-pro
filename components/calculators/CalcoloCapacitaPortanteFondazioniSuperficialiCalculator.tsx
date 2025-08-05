@@ -1,4 +1,5 @@
-"use client";
+"use client";;
+import MathBlock from '@/components/ui/MathBlock';
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Chart, registerables, ChartConfiguration, ChartItem } from 'chart.js';

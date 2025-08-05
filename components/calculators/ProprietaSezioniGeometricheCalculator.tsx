@@ -1,130 +1,116 @@
-"use client";
+'use client';
+
 import React, { useState } from 'react';
 
-interface SectionProperties {
+interface Result {
   area: number;
-  centroidX: number;
-  centroidY: number;
-  momentInertiaX: number;
-  momentInertiaY: number;
+  cx: number;
+  cy: number;
+  Ix: number;
+  Iy: number;
 }
 
-const SectionType = {
-  RECTANGLE: 'rectangle',
-  CIRCLE: 'circle',
-  T: 't',
-  I: 'i',
-} as const;
-
-type SectionTypeKey = keyof typeof SectionType;
+type SectionKind = 'rectangle' | 'circle'; // estendi qui per T o I
 
 const ProprietaSezioniGeometricheCalculator: React.FC = () => {
-  const [sectionType, setSectionType] = useState<SectionTypeKey>('rectangle');
-  const [width, setWidth] = useState<number>(0);
-  const [height, setHeight] = useState<number>(0);
-  const [radius, setRadius] = useState<number>(0);
-  const [results, setResults] = useState<SectionProperties | null>(null);
+  const [type, setType] = useState<SectionKind>('rectangle');
+  const [w, setW] = useState<string>('');  // larghezza o diametro
+  const [h, setH] = useState<string>('');  // altezza solo rettangolo
+  const [res, setRes] = useState<Result | null>(null);
 
-  const calculate = () => {
-    let area = 0;
-    let centroidX = 0;
-    let centroidY = 0;
-    let momentInertiaX = 0;
-    let momentInertiaY = 0;
+  const parse = (s: string) => parseFloat(s) || 0;
 
-    switch (sectionType) {
-      case 'rectangle':
-        area = width * height;
-        centroidX = width / 2;
-        centroidY = height / 2;
-        momentInertiaX = (width * height ** 3) / 12;
-        momentInertiaY = (height * width ** 3) / 12;
-        break;
-      case 'circle':
-        area = Math.PI * radius ** 2;
-        centroidX = 0;
-        centroidY = 0;
-        momentInertiaX = Math.PI * radius ** 4 / 4;
-        momentInertiaY = Math.PI * radius ** 4 / 4;
-        break;
-      // Add calculations for T and I sections here
-      default:
-        break;
+  const calc = () => {
+    const width = parse(w);
+    const height = parse(h);
+    if (type === 'rectangle' && (width <= 0 || height <= 0)) return;
+    if (type === 'circle' && width <= 0) return;
+
+    let area = 0, cx = 0, cy = 0, Ix = 0, Iy = 0;
+
+    if (type === 'rectangle') {
+      area = width * height;
+      cx = width / 2;
+      cy = height / 2;
+      Ix = (width * Math.pow(height, 3)) / 12;
+      Iy = (height * Math.pow(width, 3)) / 12;
+    } else if (type === 'circle') {
+      const r = width / 2;
+      area = Math.PI * r * r;
+      cx = cy = 0;
+      Ix = Iy = (Math.PI * Math.pow(r, 4)) / 4;
     }
-
-    setResults({
-      area,
-      centroidX,
-      centroidY,
-      momentInertiaX,
-      momentInertiaY,
-    });
+    setRes({ area, cx, cy, Ix, Iy });
   };
 
   return (
-    <div className="p-4">
-      <h1 className="text-3xl font-bold mb-4">Calcolo Proprietà Sezioni Geometriche</h1>
-      <p className="mb-4">Calcola area, baricentro e momenti d'inerzia per sezioni geometriche comuni.</p>
-      <div className="mb-4">
-        <label htmlFor="sectionType" className="block text-gray-700 font-bold mb-2">Tipo di Sezione:</label>
+    <div className="p-4 bg-gray-100 rounded-lg shadow-md">
+      <h1 className="text-2xl font-bold mb-4">Proprietà Sezioni Geometriche</h1>
+
+      <label className="block mb-4">
+        <span className="font-bold text-gray-700">Tipo sezione:</span>
         <select
-          id="sectionType"
-          value={sectionType}
-          onChange={(e) => setSectionType(e.target.value as SectionTypeKey)}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          value={type}
+          onChange={(e) => {
+            setType(e.target.value as SectionKind);
+            setRes(null);
+          }}
+          className="mt-1 w-full border rounded p-2"
         >
           <option value="rectangle">Rettangolo</option>
           <option value="circle">Cerchio</option>
-          <option value="t">T</option>
-          <option value="i">I</option>
         </select>
-      </div>
-      {sectionType === 'rectangle' && (
+      </label>
+
+      {type === 'rectangle' && (
         <>
-          <div className="mb-4">
-            <label htmlFor="width" className="block text-gray-700 font-bold mb-2">Larghezza:</label>
+          <label className="block mb-2">
+            <span className="text-gray-700">Larghezza b (mm):</span>
             <input
               type="number"
-              id="width"
-              value={width}
-              onChange={(e) => setWidth(parseFloat(e.target.value))}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              value={w}
+              onChange={(e) => setW(e.target.value)}
+              className="mt-1 w-full border rounded p-2"
             />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="height" className="block text-gray-700 font-bold mb-2">Altezza:</label>
+          </label>
+          <label className="block mb-4">
+            <span className="text-gray-700">Altezza h (mm):</span>
             <input
               type="number"
-              id="height"
-              value={height}
-              onChange={(e) => setHeight(parseFloat(e.target.value))}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              value={h}
+              onChange={(e) => setH(e.target.value)}
+              className="mt-1 w-full border rounded p-2"
             />
-          </div>
+          </label>
         </>
       )}
-      {sectionType === 'circle' && (
-        <div className="mb-4">
-          <label htmlFor="radius" className="block text-gray-700 font-bold mb-2">Raggio:</label>
+
+      {type === 'circle' && (
+        <label className="block mb-4">
+          <span className="text-gray-700">Diametro d (mm):</span>
           <input
             type="number"
-            id="radius"
-            value={radius}
-            onChange={(e) => setRadius(parseFloat(e.target.value))}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            value={w}
+            onChange={(e) => setW(e.target.value)}
+            className="mt-1 w-full border rounded p-2"
           />
-        </div>
+        </label>
       )}
-      <button onClick={calculate} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+
+      <button
+        type="button"
+        onClick={calc}
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
         Calcola
       </button>
-      {results && (
-        <div className="mt-4">
-          <p>Area: {results.area}</p>
-          <p>Centroide X: {results.centroidX}</p>
-          <p>Centroide Y: {results.centroidY}</p>
-          <p>Momento d'inerzia X: {results.momentInertiaX}</p>
-          <p>Momento d'inerzia Y: {results.momentInertiaY}</p>
+
+      {res && (
+        <div className="mt-4 space-y-1 text-gray-800">
+          <p>Area A = {res.area.toFixed(2)} mm²</p>
+          <p>Centroide (x̄, ȳ) = ({res.cx.toFixed(2)}, {res.cy.toFixed(2)}) mm</p>
+          <p>I<sub>x</sub> = {res.Ix.toFixed(2)} mm⁴</p>
+          <p>I<sub>y</sub> = {res.Iy.toFixed(2)} mm⁴</p>
         </div>
       )}
     </div>

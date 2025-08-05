@@ -1,4 +1,5 @@
-'use client';
+'use client';;
+import MathBlock from '@/components/ui/MathBlock';
 import React from 'react';
 import { motion } from 'framer-motion';
 import { cva, type VariantProps } from 'class-variance-authority';

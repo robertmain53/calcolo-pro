@@ -1,62 +1,84 @@
-"use client";
-import React, { useState } from 'react';
+"use client";;
+import MathBlock from '@/components/ui/MathBlock';
+import React, { useState } from "react";
 
 interface CalculatorData {
-  area: number;
-  moduloElasticita: number;
-  lunghezzaLibera: number;
-  momentoInerzia: number;
+  area?: number;
+  moduloElasticita?: number;
+  lunghezzaLibera?: number;
+  momentoInerzia?: number;
 }
 
 const CalcoloCaricoCriticoEulerianoPilastriAcciaioCalculator: React.FC = () => {
-  const [data, setData] = useState<CalculatorData | null>(null);
+  const [data, setData] = useState<CalculatorData>({});
   const [risultato, setRisultato] = useState<number | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setData(prevData => ({
+    setData((prevData) => ({
       ...prevData,
-      [name]: parseFloat(value),
+      [name]: value === '' ? undefined : parseFloat(value),
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (data) {
-      const { area, moduloElasticita, lunghezzaLibera, momentoInerzia } = data;
-      const caricoCritico = (Math.PI * Math.PI * moduloElasticita * momentoInerzia) / (lunghezzaLibera * lunghezzaLibera);
-      setRisultato(caricoCritico);
+  const calculate = () => {
+    const { moduloElasticita, momentoInerzia, lunghezzaLibera } = data;
+
+    if (
+      moduloElasticita === undefined ||
+      momentoInerzia === undefined ||
+      lunghezzaLibera === undefined
+    ) {
+      setRisultato(null);
+      return;
     }
+
+    // Formula di Eulero per il carico critico: Pcr = (π² * E * I) / (L²)
+    const pi = Math.PI;
+    const Pcr = (pi * pi * moduloElasticita * momentoInerzia) / (lunghezzaLibera * lunghezzaLibera);
+    setRisultato(Pcr);
   };
 
   return (
-    <div className="p-4">
-      <h1>Calcolo Carico Critico Euleriano per Pilastri in Acciaio</h1>
-      <p>Verifica a instabilità (EC3)</p>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="area" className="block text-gray-700 font-bold mb-2">Area (m²):</label>
-          <input type="number" id="area" name="area" value={data?.area || ''} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="moduloElasticita" className="block text-gray-700 font-bold mb-2">Modulo di Elasticità (Pa):</label>
-          <input type="number" id="moduloElasticita" name="moduloElasticita" value={data?.moduloElasticita || ''} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="lunghezzaLibera" className="block text-gray-700 font-bold mb-2">Lunghezza Libera (m):</label>
-          <input type="number" id="lunghezzaLibera" name="lunghezzaLibera" value={data?.lunghezzaLibera || ''} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="momentoInerzia" className="block text-gray-700 font-bold mb-2">Momento di Inerzia (m⁴):</label>
-          <input type="number" id="momentoInerzia" name="momentoInerzia" value={data?.momentoInerzia || ''} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required />
-        </div>
-        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-          Calcola
-        </button>
-      </form>
+    <div className="p-4 bg-gray-100 rounded-lg shadow-md">
+      <h1 className="text-2xl font-bold mb-2">
+        Calcolo Carico Critico Euleriano - Pilastri in Acciaio
+      </h1>
+      <p className="mb-4 text-gray-700">
+        Calcolo semplificato del carico critico secondo la teoria di Eulero.
+      </p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <input
+          type="number"
+          name="moduloElasticita"
+          placeholder="Modulo di elasticità E (N/mm²)"
+          onChange={handleChange}
+          className="border border-gray-300 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <input
+          type="number"
+          name="momentoInerzia"
+          placeholder="Momento di inerzia I (mm⁴)"
+          onChange={handleChange}
+          className="border border-gray-300 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <input
+          type="number"
+          name="lunghezzaLibera"
+          placeholder="Lunghezza libera L (mm)"
+          onChange={handleChange}
+          className="border border-gray-300 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <button
+        onClick={calculate}
+        className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      >
+        Calcola
+      </button>
       {risultato !== null && (
-        <div className="mt-4">
-          <p className="text-green-500 font-bold">Carico Critico Euleriano: {risultato.toFixed(2)} N</p>
+        <div className="mt-4 text-lg font-semibold">
+          Carico critico P<sub>cr</sub>: {risultato.toFixed(2)} N
         </div>
       )}
     </div>

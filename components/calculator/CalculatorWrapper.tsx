@@ -1,4 +1,5 @@
-'use client';
+'use client';;
+import MathBlock from './../ui/MathBlock';
 import React, { useState, createContext, useContext } from 'react';
 import ToolsSidebar from './ToolsSidebar';
 

@@ -1,92 +1,99 @@
-"use client";
+'use client';
+
 import React, { useState } from 'react';
 
-interface CorrelazioniProvePenetrometricheData {
-  Nspt: number;
-  qc: number;
-  fs: number;
+interface PenetroData {
+  Nspt: number; // colpi SPT
+  qc: number;   // punta CPT (MPa)
+  fs: number;   // manica CPT (kPa)
 }
 
+const initialData: PenetroData = { Nspt: 0, qc: 0, fs: 0 };
+
 const CorrelazioniProvePenetrometricheCalculator: React.FC = () => {
-  const [data, setData] = useState<CorrelazioniProvePenetrometricheData | null>(null);
+  const [data, setData] = useState<PenetroData>(initialData);
   const [phiPrima, setPhiPrima] = useState<number | null>(null);
   const [cu, setCu] = useState<number | null>(null);
   const [Ed, setEd] = useState<number | null>(null);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setData(prevData => ({
-      ...prevData,
-      [name]: parseFloat(value),
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setData(prev => ({
+      ...prev,
+      [name as keyof PenetroData]: Number(value) || 0,
     }));
   };
 
   const calculate = () => {
-    // Aggiungi qui la logica di calcolo basata su Nspt, qc e fs
-    // Esempio (sostituisci con le tue formule):
-    if (data) {
-      const { Nspt, qc, fs } = data;
-      const calculatedPhiPrima = Nspt * 0.1; // Sostituisci con la tua formula
-      const calculatedCu = qc * 0.01; // Sostituisci con la tua formula
-      const calculatedEd = fs * 10; // Sostituisci con la tua formula
-      setPhiPrima(calculatedPhiPrima);
-      setCu(calculatedCu);
-      setEd(calculatedEd);
-    }
+    const { Nspt, qc, fs } = data;
+
+    // 👉 Correlazioni esemplificative – sostituisci con formule valide
+    const phi  = 27 + 0.3 * Nspt;     // deg
+    const cu_kPa = 0.22 * qc;         // kPa
+    const Ed_MPa = 2 * fs;            // MPa
+
+    setPhiPrima(phi);
+    setCu(cu_kPa);
+    setEd(Ed_MPa);
   };
 
   return (
     <div className="p-4 bg-gray-100 rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold mb-2">Correlazione da Prove Penetrometriche (SPT, CPT): Stima di ϕ′, cu​, Ed​</h1>
-      <p className="text-gray-600 mb-4">Questo calcolatore stima i parametri geotecnici ϕ′, cu​, Ed​ a partire dai dati delle prove penetrometriche SPT e CPT.</p>
-      <div className="mb-4">
-        <label htmlFor="Nspt" className="block text-gray-700 font-bold mb-1">Nspt:</label>
-        <input
-          type="number"
-          id="Nspt"
-          name="Nspt"
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          onChange={handleInputChange}
-        />
+      <h1 className="text-2xl font-bold mb-2">
+        Correlazioni Penetrometriche (ϕ′, cu, Ed)
+      </h1>
+      <p className="text-gray-600 mb-4">
+        Stima dei parametri geotecnici da SPT &amp; CPT – formule indicative.
+      </p>
+
+      <div className="space-y-4">
+        <label className="block">
+          <span className="font-bold text-gray-700">Nspt:</span>
+          <input
+            type="number"
+            name="Nspt"
+            value={data.Nspt}
+            onChange={handleInputChange}
+            className="mt-1 w-full border rounded p-2"
+          />
+        </label>
+
+        <label className="block">
+          <span className="font-bold text-gray-700">qc (MPa):</span>
+          <input
+            type="number"
+            name="qc"
+            value={data.qc}
+            onChange={handleInputChange}
+            className="mt-1 w-full border rounded p-2"
+          />
+        </label>
+
+        <label className="block">
+          <span className="font-bold text-gray-700">fs (kPa):</span>
+          <input
+            type="number"
+            name="fs"
+            value={data.fs}
+            onChange={handleInputChange}
+            className="mt-1 w-full border rounded p-2"
+          />
+        </label>
       </div>
-      <div className="mb-4">
-        <label htmlFor="qc" className="block text-gray-700 font-bold mb-1">qc:</label>
-        <input
-          type="number"
-          id="qc"
-          name="qc"
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          onChange={handleInputChange}
-        />
-      </div>
-      <div className="mb-4">
-        <label htmlFor="fs" className="block text-gray-700 font-bold mb-1">fs:</label>
-        <input
-          type="number"
-          id="fs"
-          name="fs"
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          onChange={handleInputChange}
-        />
-      </div>
-      <button onClick={calculate} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+
+      <button
+        type="button"
+        onClick={calculate}
+        className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
         Calcola
       </button>
-      {phiPrima !== null && (
-        <div className="mt-4">
-          <p className="text-gray-700 font-bold">ϕ′: {phiPrima.toFixed(2)}</p>
-        </div>
-      )}
-      {cu !== null && (
-        <div className="mt-4">
-          <p className="text-gray-700 font-bold">cu: {cu.toFixed(2)}</p>
-        </div>
-      )}
-      {Ed !== null && (
-        <div className="mt-4">
-          <p className="text-gray-700 font-bold">Ed: {Ed.toFixed(2)}</p>
-        </div>
-      )}
+
+      <div className="mt-6 space-y-1 text-gray-800">
+        {phiPrima !== null && <p>ϕ′ ≈ {phiPrima.toFixed(1)}°</p>}
+        {cu !== null && <p>cu ≈ {cu.toFixed(1)} kPa</p>}
+        {Ed !== null && <p>Ed ≈ {Ed.toFixed(1)} MPa</p>}
+      </div>
     </div>
   );
 };

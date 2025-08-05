@@ -1,63 +1,62 @@
-"use client";
+'use client';
+
 import React, { useState } from 'react';
 
-interface RoiCalculatorProps {
+interface Props {
   title: string;
   description: string;
 }
 
-const RoiCalculator: React.FC<RoiCalculatorProps> = ({ title, description }) => {
-  const [investment, setInvestment] = useState<number | ''>('');
-  const [profit, setProfit] = useState<number | ''>('');
+const RoiCalculator: React.FC<Props> = ({ title, description }) => {
+  // gestiamo gli input come stringhe, poi li convertiamo al calcolo
+  const [investment, setInvestment] = useState<string>('');
+  const [profit, setProfit] = useState<string>('');
   const [roi, setRoi] = useState<number | null>(null);
 
   const calculateRoi = () => {
-    if (investment && profit) {
-      const roiValue = (Number(profit) / Number(investment)) * 100;
-      setRoi(roiValue);
-    } else {
-      setRoi(null);
-    }
+    const inv = parseFloat(investment);
+    const prof = parseFloat(profit);
+    if (isNaN(inv) || isNaN(prof) || inv === 0) return setRoi(null);
+    setRoi((prof / inv) * 100);
   };
 
   return (
     <div className="p-4 bg-gray-100 rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-2">{title}</h1>
       <p className="text-gray-600 mb-4">{description}</p>
-      <div className="mb-4">
-        <label className="block text-gray-700 font-bold mb-2" htmlFor="investment">
-          Investimento:
-        </label>
+
+      <label className="block mb-4">
+        <span className="font-bold text-gray-700">Investimento (€):</span>
         <input
           type="number"
-          id="investment"
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          value={investment || ''}
+          value={investment}
           onChange={(e) => setInvestment(e.target.value)}
+          className="mt-1 w-full border rounded p-2"
         />
-      </div>
-      <div className="mb-4">
-        <label className="block text-gray-700 font-bold mb-2" htmlFor="profit">
-          Profitto:
-        </label>
+      </label>
+
+      <label className="block mb-4">
+        <span className="font-bold text-gray-700">Profitto (€):</span>
         <input
           type="number"
-          id="profit"
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          value={profit || ''}
+          value={profit}
           onChange={(e) => setProfit(e.target.value)}
+          className="mt-1 w-full border rounded p-2"
         />
-      </div>
+      </label>
+
       <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        type="button"
         onClick={calculateRoi}
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       >
         Calcola ROI
       </button>
+
       {roi !== null && (
-        <div className="mt-4">
-          <p className="text-xl font-bold">ROI: {roi.toFixed(2)}%</p>
-        </div>
+        <p className="mt-4 text-xl font-bold text-indigo-700">
+          ROI: {roi.toFixed(2)}%
+        </p>
       )}
     </div>
   );

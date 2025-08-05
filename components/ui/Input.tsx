@@ -1,4 +1,5 @@
-'use client';
+'use client';;
+import MathBlock from '@/components/ui/MathBlock';
 
 import { forwardRef, useState, type InputHTMLAttributes } from 'react';
 import { motion, type HTMLMotionProps } from 'framer-motion';

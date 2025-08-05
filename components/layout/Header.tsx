@@ -1,4 +1,5 @@
-'use client';
+'use client';;
+import MathBlock from '@/components/ui/MathBlock';
 import Link from "next/link";
 
 

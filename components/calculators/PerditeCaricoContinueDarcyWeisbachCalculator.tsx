@@ -1,4 +1,5 @@
-"use client";
+"use client";;
+import MathBlock from '@/components/ui/MathBlock';
 import React, { useState } from 'react';
 
 // Valori di riferimento per la scabrezza assoluta (ε) secondo la normativa (es. UNI 9182)
