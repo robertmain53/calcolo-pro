@@ -4,7 +4,7 @@ import path from 'path';
 import Breadcrumb from '@/components/layout/Breadcrumb';
 
 async function getCalculators() {
-    const calculatorsPath = path.join(process.cwd(), 'content', 'topografia-e-matematica-di-base');
+    const calculatorsPath = path.join(process.cwd(), 'content', 'ingegneria-idraulica');
     try {
         const entries = await fs.readdir(calculatorsPath, { withFileTypes: true });
         return entries
@@ -19,7 +19,7 @@ async function getCalculators() {
 
 export default async function CategoryPage() {
   const calculators = await getCalculators();
-  const categoryName = "Topografia e Matematica di Base";
+  const categoryName = "Ingegneria Idraulica";
   const crumbs = [{ name: "Home", path: "/" }, { name: categoryName }];
 
   return (
@@ -37,7 +37,7 @@ export default async function CategoryPage() {
         {calculators.map((calc) => (
             <Link 
               key={calc.slug} 
-              href={`/topografia-e-matematica-di-base/${calc.slug}`} 
+              href={`/ingegneria-idraulica/${calc.slug}`} 
               className="block p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
             >
               <h2 className="font-bold text-xl text-slate-800 mb-2 hover:text-blue-600 transition-colors">

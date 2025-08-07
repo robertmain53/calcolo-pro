@@ -1,13 +1,15 @@
+// app/acustica-e-termotecnica/[slug]/page.tsx - USANDO CONFIGURAZIONI CENTRALIZZATE
 import { notFound } from 'next/navigation';
 import fs from 'fs/promises';
 import path from 'path';
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import Breadcrumb from '@/components/layout/Breadcrumb';
-import RelatedCalculators from '@/components/calculator/RelatedCalculators';
-
+import ProfessionalCalculatorLayout from '@/components/calculator/ProfessionalCalculatorLayout';
+import { getCategoryConfig, getCalculatorConfig } from '@/lib/calculator-configs';
 
 type Props = { params: { slug: string } };
+
+const CATEGORY_SLUG = 'acustica-e-termotecnica';
 
 async function getCalculatorComponent(slug: string) {
   try {
@@ -17,8 +19,11 @@ async function getCalculatorComponent(slug: string) {
 }
 
 async function getContent(slug: string) {
+  const categoryConfig = getCategoryConfig(CATEGORY_SLUG);
+  if (!categoryConfig) return null;
+  
   try {
-    const contentPath = path.join(process.cwd(), 'content', 'acustica-e-termotecnica', `${slug}.md`);
+    const contentPath = path.join(process.cwd(), 'content', categoryConfig.contentPath, `${slug}.md`);
     return await fs.readFile(contentPath, 'utf8');
   } catch (error) { return null; }
 }
@@ -29,66 +34,42 @@ export default async function CalculatorPage({ params }: Props) {
 
   if (!CalculatorComponent) notFound();
   
+  // 👇 USA LE CONFIGURAZIONI CENTRALIZZATE
+  const categoryConfig = getCategoryConfig(CATEGORY_SLUG);
+  const calculatorConfig = getCalculatorConfig(CATEGORY_SLUG, params.slug);
+  
+  if (!categoryConfig) notFound();
+  
   const calculatorName = params.slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-  const crumbs = [
-      { name: "Home", path: "/" },
-      { name: "Acustica e Termotecnica", path: "/acustica-e-termotecnica" },
-      { name: calculatorName }
+
+  const breadcrumbs = [
+    { name: "Home", path: "/" },
+    { name: categoryConfig.name, path: `/${categoryConfig.path}` },
+    { name: calculatorName }
   ];
 
   return (
-    <div className="space-y-8">
-        <Breadcrumb crumbs={crumbs} />
+    <ProfessionalCalculatorLayout
+      title={calculatorName}
+      description={calculatorConfig?.description || `Calcolo professionale per ${calculatorName.toLowerCase()} secondo normative tecniche vigenti`}
+      category={categoryConfig.name}
+      difficulty={calculatorConfig?.difficulty || 'Medio'}
+      estimatedTime={calculatorConfig?.estimatedTime || '2-5 min'}
+      relatedTools={calculatorConfig?.relatedTools || []}
+      disclaimer={calculatorConfig?.disclaimer}
+      breadcrumbs={breadcrumbs}
+    >
+      <div className="space-y-8">
+        <CalculatorComponent />
         
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            {/* Calculator */}
-            <div className="lg:col-span-2 p-2  ">
-                <CalculatorComponent />
-            </div>
-            
-            {/* Sidebar */}
-            <div className="lg:col-span-1">
-                <div className="p-2  ">
-
-  <RelatedCalculators
-            currentCategory="Acustica e Termotecnica"
-          currentSlug="acustica-e-termotecnica"
-          maxItems={7} // opzionale
-        />
-<div>
-
- <h3 className="text-2xl font-bold text-gray-800 mb-3 mt-6 flex items-center gap-2">
-       Prodotti Correlati
-      </h3>
-      <ul className="space-y-2">
-         
-          <li>
-             <a href="https://amzn.to/40MAd3DW"
-              className="text-blue-600 hover:underline"
-            >
-              Libri e manuali di acustica e termotecnica
-               
-              
-            </a>
-          </li>
-      </ul>
-      <span className="text-gray-80 text-xs my-20">In qualità di Affiliato Amazon < br/> io ricevo un guadagno dagli acquisti idonei</span>
-
-
-</div>
-
-        
-                  
-                </div>
-            </div>
-        </div>
-        
-        {/* Content */}
         {content && (
-            <article className="prose lg:prose-l max-w-none p-8 ">
-                <ReactMarkdown>{content}</ReactMarkdown>
+          <div className="mt-12 pt-8 border-t border-gray-200">
+            <article className="prose lg:prose-lg max-w-none">
+              <ReactMarkdown>{content}</ReactMarkdown>
             </article>
+          </div>
         )}
-    </div>
+      </div>
+    </ProfessionalCalculatorLayout>
   );
 }

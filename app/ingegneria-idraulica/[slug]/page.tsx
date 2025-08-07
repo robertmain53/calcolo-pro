@@ -1,11 +1,15 @@
+// app/acustica-e-termotecnica/[slug]/page.tsx - USANDO CONFIGURAZIONI CENTRALIZZATE
 import { notFound } from 'next/navigation';
 import fs from 'fs/promises';
 import path from 'path';
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import Breadcrumb from '@/components/layout/Breadcrumb';
+import ProfessionalCalculatorLayout from '@/components/calculator/ProfessionalCalculatorLayout';
+import { getCategoryConfig, getCalculatorConfig } from '@/lib/calculator-configs';
 
 type Props = { params: { slug: string } };
+
+const CATEGORY_SLUG = 'ingegneria-idraulica';
 
 async function getCalculatorComponent(slug: string) {
   try {
@@ -15,8 +19,11 @@ async function getCalculatorComponent(slug: string) {
 }
 
 async function getContent(slug: string) {
+  const categoryConfig = getCategoryConfig(CATEGORY_SLUG);
+  if (!categoryConfig) return null;
+  
   try {
-    const contentPath = path.join(process.cwd(), 'content', 'ingegneria-idraulica', `${slug}.md`);
+    const contentPath = path.join(process.cwd(), 'content', categoryConfig.contentPath, `${slug}.md`);
     return await fs.readFile(contentPath, 'utf8');
   } catch (error) { return null; }
 }
@@ -27,48 +34,42 @@ export default async function CalculatorPage({ params }: Props) {
 
   if (!CalculatorComponent) notFound();
   
+  // 👇 USA LE CONFIGURAZIONI CENTRALIZZATE
+  const categoryConfig = getCategoryConfig(CATEGORY_SLUG);
+  const calculatorConfig = getCalculatorConfig(CATEGORY_SLUG, params.slug);
+  
+  if (!categoryConfig) notFound();
+  
   const calculatorName = params.slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-  const crumbs = [
-      { name: "Home", path: "/" },
-      { name: "Ingegneria Idraulica", path: "/ingegneria-idraulica" },
-      { name: calculatorName }
+
+  const breadcrumbs = [
+    { name: "Home", path: "/" },
+    { name: categoryConfig.name, path: `/${categoryConfig.path}` },
+    { name: calculatorName }
   ];
 
   return (
-    <div className="space-y-8">
-        <Breadcrumb crumbs={crumbs} />
+    <ProfessionalCalculatorLayout
+      title={calculatorName}
+      description={calculatorConfig?.description || `Calcolo professionale per ${calculatorName.toLowerCase()} secondo normative tecniche vigenti`}
+      category={categoryConfig.name}
+      difficulty={calculatorConfig?.difficulty || 'Medio'}
+      estimatedTime={calculatorConfig?.estimatedTime || '2-5 min'}
+      relatedTools={calculatorConfig?.relatedTools || []}
+      disclaimer={calculatorConfig?.disclaimer}
+      breadcrumbs={breadcrumbs}
+    >
+      <div className="space-y-8">
+        <CalculatorComponent />
         
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            {/* Calculator */}
-            <div className="lg:col-span-2 p-2 bg-white rounded-2xl shadow-lg">
-                <CalculatorComponent />
-            </div>
-            
-            {/* Sidebar */}
-            <div className="lg:col-span-1">
-                <div className="p-2 bg-white rounded-2xl shadow-lg">
-                    <h3 className="text-xl font-bold mb-4">Strumenti</h3>
-                    <div className="space-y-2">
-                        <button className="w-full p-3 text-left rounded-lg hover:bg-gray-100 transition-colors">
-                            📊 Salva Risultato
-                        </button>
-                        <button className="w-full p-3 text-left rounded-lg hover:bg-gray-100 transition-colors">
-                            📄 Esporta PDF
-                        </button>
-                        <button className="w-full p-3 text-left rounded-lg hover:bg-gray-100 transition-colors">
-                            🔗 Condividi
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        {/* Content */}
         {content && (
-            <article className="prose lg:prose-xl max-w-none bg-white p-8 rounded-2xl shadow-lg">
-                <ReactMarkdown>{content}</ReactMarkdown>
+          <div className="mt-12 pt-8 border-t border-gray-200">
+            <article className="prose lg:prose-lg max-w-none">
+              <ReactMarkdown>{content}</ReactMarkdown>
             </article>
+          </div>
         )}
-    </div>
+      </div>
+    </ProfessionalCalculatorLayout>
   );
 }

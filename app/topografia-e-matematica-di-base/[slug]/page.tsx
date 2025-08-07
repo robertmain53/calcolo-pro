@@ -9,7 +9,7 @@ import { getCategoryConfig, getCalculatorConfig } from '@/lib/calculator-configs
 
 type Props = { params: { slug: string } };
 
-const CATEGORY_SLUG = 'computo-sicurezza-e-cantiere-10-calcolatori';
+const CATEGORY_SLUG = 'topografia-e-matematica-di-base';
 
 async function getCalculatorComponent(slug: string) {
   try {

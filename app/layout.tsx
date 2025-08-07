@@ -1,27 +1,29 @@
 // app/layout.tsx
 import './globals.css';
 import type { ReactNode } from 'react';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
 
 export const metadata = {
-  title: 'Calcolo.online',
-  description: 'Homepage - Calcolo.online',
+  title: 'Calcolo.online - Calcolatori Professionali per Ingegneri e Architetti',
+  description: 'Oltre 50 calcolatori specializzati per professionisti tecnici. Strumenti certificati per calcoli strutturali, termotecnici, acustici e di sicurezza.',
+  keywords: 'calcolatori, ingegneria, architettura, strutturale, termotecnica, acustica, sicurezza, cantiere',
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html>
-      <body className="min-h-screen   text-gray-900 antialiased">
-        <header className="p-6 bg-gray-900">
-          <h1 className="text-2xl text-white font-bold ">Calcolo.online</h1>
-        </header>
+    <html lang="it">
+      <body className="min-h-screen bg-gray-50 text-gray-900 antialiased">
+        {/* Header Professionale */}
+        <Header />
 
-        <main className="p-1 mt-3">{children}</main>
+        {/* Main Content */}
+        <main className="min-h-screen">
+          {children}
+        </main>
 
-        <footer className="mt-12 p-4 text-center text-sm text-gray-800"> 
-        <p>  In qualità di affiliati Amazon, riceviamo un guadagno dagli acquisti idonei effettuati tramite i link presenti sul nostro sito.</p>
-          <a href="/chi-siamo">Chi siamo</a> - <a href="/chi-siamo">Privacy-Policy</a> - <a href="/cookie">Cookie Policy</a> - <a href="/contattaci">Contattaci/Feedback</a> - 
-          © {new Date().getFullYear()} Calcolo.online
-        </footer>
+        {/* Footer Professionale */}
+        <Footer />
       </body>
     </html>
   );
