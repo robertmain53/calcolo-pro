@@ -333,11 +333,8 @@ export default function ProfessionalCalculatorLayout({
               </motion.div>
             )}
           </div>
-        </div>
-      </div>
 
-
-       {/* --- AdSense block --- sidebar*/}22222
+             {/* --- AdSense block --- sidebar*/}22222
                 <Script
                   src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9476637732224939"
                   strategy="afterInteractive"
@@ -356,7 +353,8 @@ export default function ProfessionalCalculatorLayout({
                 </Script>
 
 
-
+        </div>
+      </div>
 
     </div>
   );
