@@ -67,8 +67,7 @@ export default async function CalculatorPage({ params }: Props) {
           <div className="mt-12 pt-8 border-t border-gray-200">
             <article className="prose lg:prose-lg max-w-none">
 
-
-             {/* --- AdSense block --- sidebar*/}22222
+             {/* --- AdSense block --- sidebar*/}
                 <Script
                   src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9476637732224939"
                   strategy="afterInteractive"
@@ -85,8 +84,6 @@ export default async function CalculatorPage({ params }: Props) {
                 <Script id="ads-init" strategy="afterInteractive">
                   {`(adsbygoogle = window.adsbygoogle || []).push({});`}
                 </Script>
-
-
 
               <ReactMarkdown>{content}</ReactMarkdown>
             </article>
