@@ -334,25 +334,6 @@ export default function ProfessionalCalculatorLayout({
             )}
           </div>
 
-             {/* --- AdSense block --- sidebar*/}22222
-                <Script
-                  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9476637732224939"
-                  strategy="afterInteractive"
-                  crossOrigin="anonymous"
-                />
-                <ins
-                  className="adsbygoogle"
-                  style={{ display: 'block' }}
-                  data-ad-client="ca-pub-9476637732224939"
-                  data-ad-slot="6880767372"
-                  data-ad-format="auto"
-                  data-full-width-responsive="true"
-                />
-                <Script id="ads-init" strategy="afterInteractive">
-                  {`(adsbygoogle = window.adsbygoogle || []).push({});`}
-                </Script>
-
-
         </div>
       </div>
 
