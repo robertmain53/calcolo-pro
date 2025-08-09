@@ -1,4 +1,6 @@
 // app/topografia-e-matematica-di-base/[slug]/page.tsx - USANDO CONFIGURAZIONI CENTRALIZZATE
+import Script from 'next/script';
+
 import { notFound } from 'next/navigation';
 import fs from 'fs/promises';
 import path from 'path';
@@ -85,7 +87,7 @@ export default async function CalculatorPage({ params }: Props) {
                   {`(adsbygoogle = window.adsbygoogle || []).push({});`}
                 </Script>
 
-                
+
               <ReactMarkdown>{content}</ReactMarkdown>
             </article>
           </div>
