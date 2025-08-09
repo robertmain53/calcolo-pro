@@ -55,18 +55,6 @@ export default function CalculatorWrapper({
     <CalculatorContext.Provider value={contextValue}>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Calculator */}
-        <div className="lg:col-span-2 p-8 bg-white rounded-2xl shadow-lg">
-          {children}
-        </div>
-        
-        {/* Enhanced Sidebar */}
-        <ToolsSidebar 
-          calculatorName={calculatorName}
-          results={results}
-          inputs={inputs}
-           
-        />
-      </div>
 
          {/* --- AdSense block --- */}
             <Script
@@ -85,6 +73,19 @@ export default function CalculatorWrapper({
             <Script id="ads-init" strategy="afterInteractive">
               {`(adsbygoogle = window.adsbygoogle || []).push({});`}
             </Script>
+
+        <div className="lg:col-span-2 p-8 bg-white rounded-2xl shadow-lg">
+          {children}
+        </div>
+        
+        {/* Enhanced Sidebar */}
+        <ToolsSidebar 
+          calculatorName={calculatorName}
+          results={results}
+          inputs={inputs}
+           
+        />
+      </div>
           
     </CalculatorContext.Provider>
   );
