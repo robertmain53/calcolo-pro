@@ -58,7 +58,7 @@ export default function CalculatorWrapper({
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Calculator */}
 
-         {/* --- AdSense block --- */}
+         {/* --- AdSense block --- before content */}
             <Script
               src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9476637732224939"
               strategy="afterInteractive"
@@ -88,8 +88,7 @@ export default function CalculatorWrapper({
            
         />
       </div>
-          
-          ddd
+        
     </CalculatorContext.Provider>
   );
 }
