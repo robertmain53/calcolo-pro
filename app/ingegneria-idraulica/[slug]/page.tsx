@@ -1,4 +1,6 @@
 // app/acustica-e-termotecnica/[slug]/page.tsx - USANDO CONFIGURAZIONI CENTRALIZZATE
+import Script from 'next/script';
+
 import { notFound } from 'next/navigation';
 import fs from 'fs/promises';
 import path from 'path';
@@ -84,7 +86,7 @@ export default async function CalculatorPage({ params }: Props) {
                 <Script id="ads-init" strategy="afterInteractive">
                   {`(adsbygoogle = window.adsbygoogle || []).push({});`}
                 </Script>
-                
+
               <ReactMarkdown>{content}</ReactMarkdown>
             </article>
           </div>
