@@ -1,4 +1,6 @@
 'use client';
+import Script from 'next/script';
+
 import { motion } from 'framer-motion';
 import { 
   BookmarkIcon, 
@@ -166,10 +168,51 @@ export default function ProfessionalCalculatorLayout({
             >
               {children}
             </motion.div>
+
+                    {/* --- AdSense block --- */}
+            <Script
+              src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9476637732224939"
+              strategy="afterInteractive"
+              crossOrigin="anonymous"
+            />
+            <ins
+              className="adsbygoogle"
+              style={{ display: 'block' }}
+              data-ad-client="ca-pub-9476637732224939"
+              data-ad-slot="6880767372"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            />
+            <Script id="ads-init" strategy="afterInteractive">
+              {`(adsbygoogle = window.adsbygoogle || []).push({});`}
+            </Script>
+
           </div>
 
           {/* Sidebar */}
           <div className="space-y-6">
+
+
+               {/* --- AdSense block --- */}
+                <Script
+                  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9476637732224939"
+                  strategy="afterInteractive"
+                  crossOrigin="anonymous"
+                />
+                <ins
+                  className="adsbygoogle"
+                  style={{ display: 'block' }}
+                  data-ad-client="ca-pub-9476637732224939"
+                  data-ad-slot="6880767372"
+                  data-ad-format="auto"
+                  data-full-width-responsive="true"
+                />
+                <Script id="ads-init" strategy="afterInteractive">
+                  {`(adsbygoogle = window.adsbygoogle || []).push({});`}
+                </Script>
+
+
+
             {/* Tools Panel */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
