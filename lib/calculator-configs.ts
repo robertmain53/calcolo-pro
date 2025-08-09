@@ -240,8 +240,15 @@ export const elettrotecnicaedElettricita: CategoryConfig = {
   path: "elettrotecnica-ed-elettricita",
   contentPath: "elettrotecnica-ed-elettricita", 
   componentPath: "calculators",
+
   calculators: {
-    // 👆 Aggiungi i tuoi calcolatori idraulici qui
+ 'btu-watt-conversione': {
+      difficulty: 'Facile',
+      estimatedTime: '1 min',
+      relatedTools: [
+        { name: 'Watt In Ampere', href: '/elettrotecnica-ed-elettricita/watt-in-ampere' }
+      ]
+    }
   }
 };
 
