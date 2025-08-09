@@ -55,26 +55,10 @@ export default function CalculatorWrapper({
 
   return (
     <CalculatorContext.Provider value={contextValue}>
-ppppppppppppp
+ 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Calculator */}
-          {/* --- AdSense block --- before content */}
-            <Script
-              src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9476637732224939"
-              strategy="afterInteractive"
-              crossOrigin="anonymous"
-            />
-            <ins
-              className="adsbygoogle"
-              style={{ display: 'block' }}
-              data-ad-client="ca-pub-9476637732224939"
-              data-ad-slot="6880767372"
-              data-ad-format="auto"
-              data-full-width-responsive="true"
-            />
-            <Script id="ads-init" strategy="afterInteractive">
-              {`(adsbygoogle = window.adsbygoogle || []).push({});`}
-            </Script>
+       
 
         <div className="lg:col-span-2 p-8 bg-white rounded-2xl shadow-lg">
           {children}

@@ -178,17 +178,7 @@ export default function ProfessionalCalculatorLayout({
 
 
              
-      
-
-            {/* Tools Panel */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="rounded-2xl bg-white shadow-lg ring-1 ring-gray-200 p-6"
-            >
-
-                       {/* --- AdSense block --- sidebar*/}
+               {/* --- AdSense block --- sidebar*/}
                 <Script
                   src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9476637732224939"
                   strategy="afterInteractive"
@@ -196,9 +186,9 @@ export default function ProfessionalCalculatorLayout({
                 />
                 <ins
                   className="adsbygoogle"
-                  style={{ display: 'block' }}
+                  style={{ display: 'inline-block;width:300px;height:250px' }}
                   data-ad-client="ca-pub-9476637732224939"
-                  data-ad-slot="6880767372"
+                  data-ad-slot="8119019518"
                   data-ad-format="auto"
                   data-full-width-responsive="true"
                 />
@@ -207,7 +197,22 @@ export default function ProfessionalCalculatorLayout({
                 </Script>
 
 
+<!-- Calcolo.online 300x250 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:250px"
+     data-ad-client="ca-pub-9476637732224939"
+     data-ad-slot="8119019518"></ins>
 
+
+
+
+            {/* Tools Panel */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="rounded-2xl bg-white shadow-lg ring-1 ring-gray-200 p-6"
+            >
               <h3 className="flex items-center text-lg font-semibold text-gray-900 mb-6">
                 <ChartBarIcon className="h-6 w-6 mr-2 text-blue-600" />
                 Strumenti
