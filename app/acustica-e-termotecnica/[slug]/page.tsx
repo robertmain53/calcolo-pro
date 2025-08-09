@@ -69,7 +69,7 @@ export default async function CalculatorPage({ params }: Props) {
             <article className="prose lg:prose-lg max-w-none">
 
 
-             {/* --- AdSense block --- sidebar*/}22222
+             {/* --- AdSense block --- sidebar*/}
                 <Script
                   src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9476637732224939"
                   strategy="afterInteractive"
