@@ -154,22 +154,8 @@ export default function ProfessionalCalculatorLayout({
           </div>
         </div>
       </div>
-
-      {/* Main Content */}
-      <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          {/* Calculator */}
-          <div className="lg:col-span-2">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="rounded-2xl bg-white shadow-lg ring-1 ring-gray-200 p-8"
-            >
-              {children}
-            </motion.div>
-
-                    {/* --- AdSense block --- */}
+          
+           {/* --- AdSense block --- */}
             <Script
               src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9476637732224939"
               strategy="afterInteractive"
@@ -186,6 +172,20 @@ export default function ProfessionalCalculatorLayout({
             <Script id="ads-init" strategy="afterInteractive">
               {`(adsbygoogle = window.adsbygoogle || []).push({});`}
             </Script>
+
+      {/* Main Content */}
+      <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+          {/* Calculator */}
+          <div className="lg:col-span-2">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="rounded-2xl bg-white shadow-lg ring-1 ring-gray-200 p-8"
+            >
+              {children}
+            </motion.div>
 
           </div>
 
