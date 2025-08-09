@@ -1,4 +1,6 @@
-'use client';;
+'use client';
+import Script from 'next/script';
+
 import MathBlock from './../ui/MathBlock';
 import React, { useState, createContext, useContext } from 'react';
 import ToolsSidebar from './ToolsSidebar';
