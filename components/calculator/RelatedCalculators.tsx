@@ -1,6 +1,8 @@
 'use client';;
 import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import Script from 'next/script';
+
 
 interface Calculator {
   name: string;
