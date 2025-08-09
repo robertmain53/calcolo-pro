@@ -174,7 +174,7 @@ export default function ProfessionalCalculatorLayout({
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">11111
+          <div className="space-y-6">
 
 
                {/* --- AdSense block --- sidebar*/}
