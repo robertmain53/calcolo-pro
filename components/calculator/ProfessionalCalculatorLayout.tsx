@@ -1,6 +1,7 @@
 'use client';
-import Script from 'next/script';
 
+import React, { useEffect, useRef } from 'react';
+import Script from 'next/script';
 import { motion } from 'framer-motion';
 import { 
   BookmarkIcon, 
@@ -51,6 +52,49 @@ const difficultyConfig = {
   }
 };
 
+// --- Small, safe AdSense component ---
+type AdProps = {
+  slot: string;
+  style?: React.CSSProperties;
+  format?: string;
+  fullWidth?: boolean;
+  test?: boolean; // true in dev/staging
+};
+
+function AdSenseUnit({
+  slot,
+  style,
+  format = 'auto',
+  fullWidth = true,
+  test = process.env.NODE_ENV !== 'production',
+}: AdProps) {
+  const ref = useRef<HTMLModElement>(null);
+
+  useEffect(() => {
+    // Push AFTER mount; swallow if already filled or blocked
+    try {
+      // @ts-ignore
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.debug('adsbygoogle push error (likely duplicate or blocked):', e);
+    }
+  }, []);
+
+  return (
+    <ins
+      ref={ref}
+      className="adsbygoogle"
+      style={style ?? { display: 'block' }}
+      data-ad-client="ca-pub-9476637732224939"
+      data-ad-slot={slot}
+      data-ad-format={format}
+      data-full-width-responsive={fullWidth ? 'true' : 'false'}
+      {...(test ? { 'data-adtest': 'on' } : {})}
+    />
+  );
+}
+
 export default function ProfessionalCalculatorLayout({
   title,
   description,
@@ -65,12 +109,10 @@ export default function ProfessionalCalculatorLayout({
   const difficultyStyle = difficultyConfig[difficulty];
 
   const handleSaveResult = () => {
-    // Implementare logica di salvataggio
     console.log('Salva risultato');
   };
 
   const handleExportPDF = () => {
-    // Implementare logica export PDF
     console.log('Esporta PDF');
     window.print();
   };
@@ -87,9 +129,7 @@ export default function ProfessionalCalculatorLayout({
         console.log('Error sharing:', err);
       }
     } else {
-      // Fallback: copy to clipboard
       navigator.clipboard.writeText(window.location.href);
-      // Qui potresti aggiungere un toast notification
     }
   };
 
@@ -99,6 +139,14 @@ export default function ProfessionalCalculatorLayout({
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Load AdSense script once on the page */}
+      <Script
+        id="adsbygoogle-loader"
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9476637732224939"
+        strategy="afterInteractive"
+        crossOrigin="anonymous"
+      />
+
       {/* Breadcrumbs */}
       {breadcrumbs.length > 0 && (
         <div className="bg-white border-b border-gray-200">
@@ -154,8 +202,6 @@ export default function ProfessionalCalculatorLayout({
           </div>
         </div>
       </div>
-          
-        
 
       {/* Main Content */}
       <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
@@ -170,33 +216,18 @@ export default function ProfessionalCalculatorLayout({
             >
               {children}
             </motion.div>
-
           </div>
 
           {/* Sidebar */}
           <div className="space-y-6">
-
-
-             
-               {/* --- AdSense block --- sidebar*/}
-                <Script
-                  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9476637732224939"
-                  strategy="afterInteractive"
-                  crossOrigin="anonymous"
-                />
-                <ins
-                  className="adsbygoogle"
-                  style={{ display: 'inline-block;width:300px;height:250px' }}
-                  data-ad-client="ca-pub-9476637732224939"
-                  data-ad-slot="8119019518"
-                  data-ad-format="auto"
-                  data-full-width-responsive="true"
-                />
-                <Script id="ads-init" strategy="afterInteractive">
-                  {`(adsbygoogle = window.adsbygoogle || []).push({});`}
-                </Script>
-
-
+            {/* --- AdSense block (sidebar) --- */}
+            <AdSenseUnit
+              slot="8119019518"
+              style={{ display: 'inline-block', width: 300, height: 250 }} // ✅ object style
+              // format="auto" // optional override
+              // fullWidth={false} // optional
+              // test // uncomment to force test mode
+            />
 
             {/* Tools Panel */}
             <motion.div
@@ -334,10 +365,8 @@ export default function ProfessionalCalculatorLayout({
               </motion.div>
             )}
           </div>
-
         </div>
       </div>
-
     </div>
   );
 }
