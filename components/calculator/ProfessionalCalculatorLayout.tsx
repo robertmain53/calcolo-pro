@@ -197,14 +197,6 @@ export default function ProfessionalCalculatorLayout({
                 </Script>
 
 
-<!-- Calcolo.online 300x250 -->
-<ins class="adsbygoogle"
-     style="display:inline-block;width:300px;height:250px"
-     data-ad-client="ca-pub-9476637732224939"
-     data-ad-slot="8119019518"></ins>
-
-
-
 
             {/* Tools Panel */}
             <motion.div
