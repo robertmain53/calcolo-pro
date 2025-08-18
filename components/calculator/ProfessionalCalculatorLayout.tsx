@@ -204,7 +204,7 @@ export default function ProfessionalCalculatorLayout({
       </div>
 
       {/* Main Content */}
-      <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
+      <div className="mx-auto max-w-7xl px-0 py-12 lg:px-8">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           {/* Calculator */}
           <div className="lg:col-span-2">
@@ -222,8 +222,8 @@ export default function ProfessionalCalculatorLayout({
           <div className="space-y-6">
             {/* --- AdSense block (sidebar) --- */}
             <AdSenseUnit
-              slot="8119019518"
-              style={{ display: 'inline-block', width: 300, height: 250 }} // ✅ object style
+              slot="6880767372"
+              style={{ display: 'block'}} // ✅ object style
               // format="auto" // optional override
               // fullWidth={false} // optional
               // test // uncomment to force test mode
