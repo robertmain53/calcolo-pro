@@ -3,6 +3,11 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: '/app/run/watt-in-ampere',
+        destination: '/elettrotecnica-ed-elettricita/watt-in-ampere',
+        permanent: true,
+      },
+      {
         source: '/app/run/calcolo-della-sezione-del-cavo',
         destination: '/elettrotecnica-ed-elettricita/calcolo-della-sezione-del-cavo',
         permanent: true,
