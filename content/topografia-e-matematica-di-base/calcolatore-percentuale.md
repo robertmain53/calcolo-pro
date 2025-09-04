@@ -1,24 +1,3 @@
----
-title: "Calcolatore Percentuale Professionale — con passaggi, batch e casi tecnici"
-description: "Calcola percentuali, incidenza, totale da parte e %, aumento, sconto, variazione %, differenza % simmetrica, punti percentuali e inversi. Include 'Mostra i passaggi', batch CSV, esempi per ingegneri/architetti, fonti e revisione."
-pubDate: 2025-09-04
-updatedDate: 2025-09-04
-tags:
-  - percentuale
-  - variazione percentuale
-  - punti percentuali
-  - differenza percentuale
-  - incidenza
-  - calcoli tecnici
-author: "Yeah Up S.r.l. — Calcolo.online"
-reviewedBy:
-  name: "Revisore tecnico (Ingegneria)"
-  role: "Quality reviewer"
-  lastReview: "2025-09-04"
----
-
-# Calcolatore Percentuale Professionale
-
 Questo strumento è progettato per **uso professionale** (periti, ingegneri, architetti) e per chi desidera **capire** oltre che ottenere un numero.  
 Offre:
 
@@ -106,5 +85,3 @@ Per evitare divisioni per zero o casi non definiti (es. media `(a+b)/2 = 0` nell
 - Microsoft Support — *Calcolare le percentuali in Excel*: principi e formule operative.  
 - Dispense universitarie (metodi percentuali, proporzioni, conversioni frazione↔%↔decimale).  
 - Testi di metrologia/qualità: confronto valori e *differenza percentuale simmetrica* (uso su base media).
-
-*(I link attivi sono disponibili nel footer della pagina; eventuali norme tecniche sono citate nelle pagine verticali dedicate.)*
