@@ -138,7 +138,7 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: 'app/run/calcolo-delliva-calcolatore-e-guida-dettagliata',
+        source: '/app/run/calcolo-delliva-calcolatore-e-guida-dettagliata',
         destination: '/finanza-e-business/calcolo-delliva-calcolatore-e-guida-dettagliata',
         permanent: true,
       },
