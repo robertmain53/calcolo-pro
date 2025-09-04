@@ -38,18 +38,18 @@ Offre:
 **Formula:** `Diff% = 100 × |a−b| / ((a+b)/2)` (con **(a+b)/2 ≠ 0**).  
 **Uso:** confronto bidirezionale tra due valori (evita l’asimmetria di “quanto cresce da a a b”).
 
-### Punti percentuali (pp)
+### Punti percentuali
 **Formula:** `Δpp = p2 − p1`.  
 **Esempio:** da 12% a 15% = **+3 pp** (non +25%).
 
-### Inversi (pre-sconto / pre-aumento)
+### Inversi 
 **Formule:**  
 - Pre-sconto: `Npre = Npost / (1 − P/100)` (con **P ≠ 100%**)  
 - Pre-aumento: `Npre = Npost / (1 + P/100)` (con **P ≠ −100%**)
 
 ---
 
-## Esempi tecnici (ingegneria/architettura)
+## Esempi tecnici 
 
 - **Variazione di resistenza**: da 25 MPa a 28 MPa → `(28−25)/25 × 100 = 12%`.  
 - **Tolleranza dimensionale**: nominale 50 mm, misurato 49,6 mm → `(49,6−50)/50 × 100 = −0,8%`.  
@@ -76,13 +76,13 @@ Per evitare divisioni per zero o casi non definiti (es. media `(a+b)/2 = 0` nell
 
 ---
 
-## Metodologia, qualità e revisione (E-E-A-T)
+## Metodologia, qualità e revisione 
 
 - **Formule**: derivate da algebra elementare e prassi contabile/ingegneristica.  
 - **Trasparenza**: per ogni modalità il calcolatore mostra **passaggi** e **arrotondamento** scelto.  
 - **Controlli qualità**: test numerici su casi tipici ed edge case (0, negativi, grandi numeri, decimali lunghi).
 
-### Fonti (selezione)
+### Fonti 
 - Microsoft Support — *Calcolare le percentuali in Excel*: principi e formule operative.  
 - Dispense universitarie (metodi percentuali, proporzioni, conversioni frazione↔%↔decimale).  
 - Testi di metrologia/qualità: confronto valori e *differenza percentuale simmetrica* (uso su base media).
