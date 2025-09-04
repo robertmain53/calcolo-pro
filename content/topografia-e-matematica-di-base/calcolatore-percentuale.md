@@ -1,4 +1,5 @@
 Questo strumento è progettato per **uso professionale** (periti, ingegneri, architetti) e per chi desidera **capire** oltre che ottenere un numero.  
+
 Offre:
 
 - **9 modalità**: percentuale di un numero, incidenza, totale da parte e %, aumento, sconto, variazione %, **differenza % (simmetrica)**, **punti percentuali**, **inversi** (pre-sconto/pre-aumento).
