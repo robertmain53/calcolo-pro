@@ -133,6 +133,16 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: '/app/run/curvatura-terra',
+        destination: '/strumenti-quotidiani/curvatura-terra',
+        permanent: true,
+      },
+      {
+        source: 'app/run/calcolo-delliva-calcolatore-e-guida-dettagliata',
+        destination: '/finanza-e-business/calcolo-delliva-calcolatore-e-guida-dettagliata',
+        permanent: true,
+      },
+      {
         source: '/app/run/calcolo-tfr',
         destination: '/finanza-e-business/calcolo-tfr',
         permanent: true,
